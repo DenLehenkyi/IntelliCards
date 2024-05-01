@@ -16,7 +16,7 @@ export default function Header(){
 
 const HeaderDiv = styled.div`
     width:100%;
-    top:75px;
+    height:35px;
     border:1px solid black;
 
 `
