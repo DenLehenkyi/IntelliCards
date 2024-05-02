@@ -1,14 +1,15 @@
 import styled from "styled-components";
 import Rating from '@mui/material/Rating';
 import OwnerSvg from "./svg/OwnerSvg";
+import Link from "next/link";
 
 
 export default function CardBox({card}) {
   return(
+    <StyledLink href={"/set/" + card._id}>
     <CardDiv>
       <NameDiv>
         <Name>{card.name}</Name>
-
       </NameDiv>
       <Container>
         <NumOfCardsDiv>
@@ -23,11 +24,18 @@ export default function CardBox({card}) {
       </Container>
 
     </CardDiv>
+    </StyledLink>
+    
 
   )
 
 }
 
+
+const StyledLink = styled(Link)`
+   text-decoration: none;
+   color: inherit;
+`
 const CardDiv = styled.div`
   width: 220px;
   height: 231px;
