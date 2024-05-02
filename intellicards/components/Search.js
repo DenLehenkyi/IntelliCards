@@ -1,17 +1,25 @@
-import styled from "styled-components"
-import SearchSvg from "./svg/SearchSvg"
+import styled from "styled-components";
+import SearchSvg from "./svg/SearchSvg";
+import FilterSvg from "./svg/FilterSvg";
 
-export default function Search(){
-    return(
-        <></>
-
-
-
-
-    )
+export default function Search() {
+  return (
+    <Div>
+      <SearchBar placeholder="Пошук.." />
+      <FilterButton>
+        <FilterSvg />
+        <ButtonText>Фільтри</ButtonText>
+      </FilterButton>
+    </Div>
+  );
 }
 
-
+const Div = styled.div`
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+  width: 100%;
+`;
 
 const SearchBar = styled.input`
   width: 786px;
@@ -20,10 +28,32 @@ const SearchBar = styled.input`
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 20px;
   border: none;
-`
-const SearchText = styled.p`
-  color: #B0B0B0;
+  padding: 0px 20px;
+  outline: none;
 
+  &::placeholder {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px; 
+  }
+`;
 
-`
+const FilterButton = styled.button`
+  display: flex; 
+  align-items: center; 
+  width: 189px;
+  height: 37px;
+  background: #C5E898;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+  border: none;
+  margin-left: 32px;
+  margin-right: 0;
+  padding: 0;
+  cursor: pointer;
+`;
 
+const ButtonText = styled.span`
+  margin-left: 35px; 
+  font-family: 'Montserrat', sans-serif;
+  font-size: 16px;
+`;

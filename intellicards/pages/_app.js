@@ -1,9 +1,4 @@
-
 import { createGlobalStyle } from "styled-components";
-
-export default function App({ Component, pageProps }) {
-  return <Component {...pageProps} />;
-}
 
 const GlobalStyles = createGlobalStyle`
   * {
@@ -16,3 +11,12 @@ const GlobalStyles = createGlobalStyle`
     font-family: 'Montserrat', sans-serif;
   }
 `;
+
+export default function App({ Component, pageProps }) {
+  return (
+    <>
+      <GlobalStyles />
+      <Component {...pageProps} />
+    </>
+  );
+}

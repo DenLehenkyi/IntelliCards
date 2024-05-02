@@ -1,11 +1,80 @@
 import styled from "styled-components";
+import Rating from '@mui/material/Rating';
+import OwnerSvg from "./svg/OwnerSvg";
 
-export default function CardBox(card) {
-  <CardDiv></CardDiv>;
+
+export default function CardBox({card}) {
+  return(
+    <CardDiv>
+      <NameDiv>
+        <Name>{card.name}</Name>
+
+      </NameDiv>
+      <Container>
+        <NumOfCardsDiv>
+          <NumOfCardsP>{card.cardCount} карточок</NumOfCardsP>
+        </NumOfCardsDiv>
+        <Rating name="half-rating-read" defaultValue={card.rating} precision={0.5} readOnly />
+        <OwnerDiv>
+          <OwnerSvg />
+          <OwnerName>{card.owner}</OwnerName>
+        </OwnerDiv>
+
+      </Container>
+
+    </CardDiv>
+
+  )
+
 }
 
 const CardDiv = styled.div`
   width: 220px;
-  height: 300px;
-  background-color: #e4ff98;
+  height: 231px;
+  background: rgba(120, 193, 243, 0.19);
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+
 `;
+
+const NameDiv = styled.div`
+   display: flex;
+   align-items: center;
+   justify-content: center;
+`
+
+const Name = styled.p`
+   font-size: 20px;
+   font-family: 'Montserrat', sans-serif;
+   font-weight: 600;
+`
+const Container = styled.div`
+  margin-left: 20px;
+    
+`
+
+const NumOfCardsDiv = styled.div`
+  width: 115px;
+  height: 32px;
+  background: #F3F3F3;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 5px;
+  margin-bottom: 40px;
+`
+const NumOfCardsP = styled.p`
+  font-size: 15px;   
+`
+const OwnerDiv = styled.div`
+  display: flex;
+  align-items: center;
+  margin-top: 17px;
+
+` 
+const OwnerName = styled.span`
+  font-size: 15px;
+  margin-left: 5px;
+`

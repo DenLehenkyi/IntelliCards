@@ -18,14 +18,14 @@ export default function Header(){
 }
 
 const HeaderDiv = styled.div`
-    width:100%;
+    max-width:100%;
+    width: 1000px;
     height:62px;
     background: linear-gradient(90deg, #C2E0F5 47.5%, #67AEDF 100%);
     border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 10px 15px;
 `
 
 

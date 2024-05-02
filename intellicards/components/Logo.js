@@ -19,5 +19,6 @@ const Name = styled.p`
 const Div = styled.div`
    display: flex;
    align-items: center;
+   margin-left: 10px;
 
 `
