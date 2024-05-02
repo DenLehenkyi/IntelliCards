@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react"
 import styled from "styled-components"
 
-export default function CategoriesBox({cardSets}){
+export default function CategoriesBox({cardSets, onClick}){
     const [categories, setCategories] = useState([]);
+    const [chosenCategory, setChosenCategory] = useState("");
     useEffect(() => {
         const catArray = [];
         cardSets.forEach((set) => {
@@ -14,16 +15,23 @@ export default function CategoriesBox({cardSets}){
     
         setCategories(catArray);
       }, [cardSets]);
+
+    const handleCategoryClick = (category) => {
+        onClick(category);
+        setChosenCategory(category);
+    }
     return (
 
         <CategoriesDiv>
             <Div>
               <StyledP>Категорії</StyledP>
+              <CategoriesP chosenCategory={chosenCategory === ""} onClick={() => handleCategoryClick("")}>Всі</CategoriesP>
               {categories.map(category => {
                 return(
-                    <CategoriesP>{category}</CategoriesP>
+                  <CategoriesP key={category} chosenCategory={chosenCategory === category} onClick={() => handleCategoryClick(category)}>{category}</CategoriesP>
                 )
-              })}
+                })}
+
             </Div>
             
 
@@ -61,4 +69,7 @@ const CategoriesP = styled.p`
   font-size: 16px;
   line-height: 20px;
   margin-bottom: 5px;
+  color: ${props => props.chosenCategory ? "#2D9B05" : "black"}; 
+  user-select: none;
+  cursor: pointer;
 `

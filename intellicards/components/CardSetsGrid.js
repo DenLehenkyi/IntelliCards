@@ -1,39 +1,46 @@
 import styled from "styled-components"
 import CardBox from "./CardsBox"
 import { Pagination } from "@mui/material"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-export default function CardSetsGrid({cardSets}){
+export default function CardSetsGrid({allCardSets, category}){
+    const [cardSets, setCardSets] = useState(allCardSets);
+
+    useEffect(() => {
+        if(category){
+            const filteredCardSets = allCardSets.filter(set => set.category === category);
+            setCardSets(filteredCardSets);
+        }
+        else{
+            setCardSets(allCardSets);
+        }
+
+    }, [allCardSets, category]);
+
     const [currentPage, setCurrentPage] = useState(1);
-    const [currentCardSets, setCurrentCardSets] = useState(cardSets);
     const productsPerPage = 12;
     const totalPages = Math.ceil(cardSets.length / productsPerPage);
-    const handlePageChange = (page) => {
-        setCurrentPage(page);
-        setCurrentCardSets(cardSets.slice(startIndex, endIndex));
-    };
     const startIndex = (currentPage - 1) * productsPerPage;
     const endIndex = startIndex + productsPerPage;
+    const currentCardSets = cardSets.slice(startIndex, endIndex);
 
+    const handlePageChange = (page) => {
+        setCurrentPage(page);
+    };
 
     return(
         <SetsDiv>
             <StyledP>Набори карточок</StyledP>
             <Grid>
-            {currentCardSets.map(set => {
-                {console.log(set)}
-          
-          return <CardBox key={set._id} card={set} />;
-        })}
+                {currentCardSets.map(set => (
+                    <CardBox key={set._id} card={set} />
+                ))}
             </Grid>
-        <PaginationDiv>
-          <Pagination count={totalPages} page={currentPage} variant="outlined" color="primary"   onChange={(event, page) => handlePageChange(page)}/>
-        </PaginationDiv>
-        
-        </SetsDiv> 
-
-
-    )
+            <PaginationDiv>
+                <Pagination count={totalPages} page={currentPage} variant="outlined" color="primary" onChange={(event, page) => handlePageChange(page)} />
+            </PaginationDiv>
+        </SetsDiv>
+    );
 }
 
 const SetsDiv = styled.div`
@@ -51,7 +58,6 @@ const StyledP = styled.p`
    font-weight: 600;
    margin-top: 10px;
    margin-bottom: 28px;
-
 `
 
 const Grid = styled.div`
@@ -65,6 +71,4 @@ const PaginationDiv = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  
-
 `

@@ -3,6 +3,7 @@ import CategoriesBox from "@/components/Categories";
 import Center from "@/components/Center";
 import Header from "@/components/Header";
 import Search from "@/components/Search";
+import { useState } from "react";
 import styled from "styled-components";
 const cardSetsData = [
   {
@@ -42,19 +43,24 @@ const cardSetsData = [
 ];
 
 export default function Home() {
+  const [selectedCategory, setSelectedCategory] = useState(""); // Initialize with an empty string
+
+  const handleCategoryClick = (category) => {
+    setSelectedCategory(category);
+  }
+
   return (
     <Center>
       <Header/>
       <Search />
       <CategoriesAndGridDiv>
-        <CategoriesBox cardSets={cardSetsData}/>
-        <CardSetsGrid cardSets={cardSetsData} />
+        <CategoriesBox cardSets={cardSetsData} onClick={handleCategoryClick} />
+        <CardSetsGrid allCardSets={cardSetsData}  category={selectedCategory}/>
       </CategoriesAndGridDiv>
     </Center>
-
-
-);
+  );
 }
+
 
 const CategoriesAndGridDiv = styled.div`
    display: flex;
