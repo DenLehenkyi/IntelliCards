@@ -2,6 +2,7 @@ import CardBox from "@/components/CardsBox";
 import CardsInSetGrid from "@/components/CardsInSetGrid";
 import Center from "@/components/Center";
 import Header from "@/components/Header";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 const cardSetsData = [
@@ -40,17 +41,71 @@ const cardSetsData = [
   
   
   ];
+
+  const cardsData = [
+    {
+      _id: 1,
+      setId: 1,
+      question: "Яка столиця України?",
+      answer: "Київ"
+    },
+    {
+      _id: 2,
+      setId: 1,
+      question: "Який найбільший океан?",
+      answer: "Тихий"
+    },
+    {
+      _id: 3,
+      setId: 2,
+      question: "Скільки планет у Сонячній системі?",
+      answer: "8"
+    },
+    {
+      _id: 4,
+      setId: 2,
+      question: "Яка найбільша планета у Сонячній системі?",
+      answer: "Юпітер"
+    },
+    {
+      _id: 5,
+      setId: 3,
+      question: "Хто написав 'Майстер і Маргарита'?",
+      answer: "Михайло Булгаков"
+    },
+    {
+      _id: 6,
+      setId: 3,
+      question: "Коли почалася Перша світова війна?",
+      answer: "1914"
+    }
+];
+
   
 export default function SetPage({_id}){
+    const [cards, setCards] = useState([]);
     const set = cardSetsData.filter(set => set._id == _id);
-    console.log(set[0].category);
+    console.log(cardsData[0].setId);
+    useEffect(() => {
+      if (set) {
+
+        const filteredCards = cardsData.filter(card => card.setId === set[0]._id);
+        setCards(filteredCards);
+        console.log(cards);
+      }
+  }, [set[0]._id]);
 
     return(
         <Center>
            <Header />
            <Container>
-           <CardBox card={set[0]} />
-           <CardsInSetGrid set={set[0]} />
+           <ButtonAndBox>
+              <CardBox card={set[0]} />
+              <Button>Перейти до вивчення</Button>
+
+           </ButtonAndBox>
+
+           <CardsInSetGrid cards={cards} />
 
            </Container>
 
@@ -71,7 +126,24 @@ export async function getServerSideProps(context) {
 }
 
 const Container = styled.div`
-margin-top: 20px;
+    margin-top: 20px;
     display: flex;
     justify-content: space-between;
+`
+
+const Button = styled.button`
+  width: 220px;
+  height: 51px;
+  background: #C5E898;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 20px;
+  border: none;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 50px;
+`
+
+const ButtonAndBox = styled.div`
+  display: flex;
+  flex-direction: column;
 `
