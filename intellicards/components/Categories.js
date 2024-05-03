@@ -28,7 +28,7 @@ export default function CategoriesBox({cardSets, onClick}){
               <CategoriesP chosenCategory={chosenCategory === ""} onClick={() => handleCategoryClick("")}>Всі</CategoriesP>
               {categories.map(category => {
                 return(
-                  <CategoriesP key={category} chosenCategory={chosenCategory === category} onClick={() => handleCategoryClick(category)}>{category}</CategoriesP>
+                  <CategoriesP key={category} $chosenCategory={chosenCategory === category} onClick={() => handleCategoryClick(category)}>{category}</CategoriesP>
                 )
                 })}
 

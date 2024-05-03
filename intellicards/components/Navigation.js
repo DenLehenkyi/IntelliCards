@@ -17,7 +17,7 @@ export default function Navigation({ page }) {
           <path
             d="M1.46875 0L0 1.46875L4.77083 6.25L0 11.0312L1.46875 12.5L7.71875 6.25L1.46875 0Z"
             fill="black"
-            fill-opacity="0.61"
+            fillOpacity="0.61"
           />
         </StyledSvg>
         <StyledP>{page}</StyledP>
