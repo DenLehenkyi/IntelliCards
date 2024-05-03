@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import Rating from '@mui/material/Rating';
-import OwnerSvg from "./svg/OwnerSvg";
+import OwnerSvg from "../svg/OwnerSvg";
 import Link from "next/link";
 
 

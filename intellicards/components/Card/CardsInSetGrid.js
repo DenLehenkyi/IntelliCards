@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import FlipSvg from "./svg/FlipSvg"
+import FlipSvg from "../svg/FlipSvg"
 
 export default function CardsInSetGrid({cards}){
     return(

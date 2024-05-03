@@ -11,5 +11,5 @@ export default function AccountSvg(){
 
 const Svg = styled.svg`
       margin-right: 10px;
-
+    
 `
