@@ -32,10 +32,22 @@ export default function CreateSet() {
         <QuestionAnswerLine />
         <QuestionAnswerLine />
       </StyledQuestionDiv>
+      <AddCard>Додати ще одну картку</AddCard>
       <AddSet>Створити набір</AddSet>
     </Center>
   );
 }
+const AddCard = styled.button`
+  width: 1000px;
+  height: 104px;
+  text-align: center;
+  font-weight: bold;
+  background-color: #f3f3f3;
+  border: none;
+  margin-top: 50px;
+  font-size: 16px;
+  border-radius: 15px;
+`;
 const AddSet = styled.button`
   width: 380px;
   height: 62px;
@@ -45,11 +57,11 @@ const AddSet = styled.button`
   font-weight: bold;
   margin-left: 350px;
   font-size: 16px;
-  cursor:pointer;
-  transition: background-color 1.0 ease; /* Add transition effect to background-color */
-    &:hover {
-        background-color: green;
-    }
+  cursor: pointer;
+  transition: background-color 1 ease; /* Add transition effect to background-color */
+  &:hover {
+    background-color: green;
+  }
 `;
 const StyledText = styled.p``;
 const StyledInput = styled.input`
