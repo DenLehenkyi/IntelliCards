@@ -35,7 +35,7 @@ export default function CardsInSetGrid({cards}){
 
 const Div = styled.div`
  width: 739px;
- height: 1141px;
+ height: auto;
  background: #F3F3F3;
  border-radius: 10px;
 `

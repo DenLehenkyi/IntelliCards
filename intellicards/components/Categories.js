@@ -25,7 +25,7 @@ export default function CategoriesBox({cardSets, onClick}){
         <CategoriesDiv>
             <Div>
               <StyledP>Категорії</StyledP>
-              <CategoriesP chosenCategory={chosenCategory === ""} onClick={() => handleCategoryClick("")}>Всі</CategoriesP>
+              <CategoriesP $chosenCategory={chosenCategory === ""} onClick={() => handleCategoryClick("")}>Всі</CategoriesP>
               {categories.map(category => {
                 return(
                   <CategoriesP key={category} $chosenCategory={chosenCategory === category} onClick={() => handleCategoryClick(category)}>{category}</CategoriesP>
@@ -69,7 +69,7 @@ const CategoriesP = styled.p`
   font-size: 16px;
   line-height: 20px;
   margin-bottom: 5px;
-  color: ${props => props.chosenCategory ? "#2D9B05" : "black"}; 
+  color: ${props => props.$chosenCategory ? "#2D9B05" : "black"}; 
   user-select: none;
   cursor: pointer;
 `

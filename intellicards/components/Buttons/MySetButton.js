@@ -11,8 +11,8 @@ const StyledButton = styled.button`
   border-radius: 20px;
   border: none;
   font-weight: bold;
-  font-size: 18px;
-
+  font-size: 16px;
+  font-family: 'Montserrat', sans-serif;
   background-color: #c5e898;
   cursor: pointer;
 `;
