@@ -2,6 +2,7 @@ import CardBox from "@/components/CardsBox";
 import CardsInSetGrid from "@/components/CardsInSetGrid";
 import Center from "@/components/Center";
 import Header from "@/components/Header";
+import Navigation from "@/components/Navigation";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
@@ -98,6 +99,7 @@ export default function SetPage({_id}){
     return(
         <Center>
            <Header />
+           <Navigation page={set[0].name}/>
            <Container>
            <ButtonAndBox>
               <CardBox card={set[0]} />
