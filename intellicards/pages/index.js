@@ -1,4 +1,4 @@
-import CardSetsGrid from "@/components/CardSetsGrid";
+import CardSetsGrid from "@/components/Card/CardSetsGrid";
 import CategoriesBox from "@/components/Categories";
 import Center from "@/components/Center";
 import Header from "@/components/Header";

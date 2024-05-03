@@ -39,7 +39,7 @@ export const StyledSvg = styled.svg`
 export const UrlsDiv = styled.div`
   display: flex;
   align-items: center;
-  margin-top: 10px;
+  margin-top: 20px;
   @media only screen and (max-width: 600px) {
     margin-top: 5px;
   }
