@@ -25,5 +25,8 @@ const StyledButton = styled.button`
     font-size: 16px;
     background-color: #c5e898;
     cursor: pointer;
-
+    transition: background-color 1.0 ease; /* Add transition effect to background-color */
+    &:hover {
+        background-color: #75C113;;
+    }
 `;

@@ -39,7 +39,17 @@ export default function CreateSet() {
 const AddSet = styled.button`
   width: 380px;
   height: 62px;
-  border-radius:15px;
+  border-radius: 15px;
+  margin-top: 150px;
+  background-color: #c5e898;
+  font-weight: bold;
+  margin-left: 350px;
+  font-size: 16px;
+  cursor:pointer;
+  transition: background-color 1.0 ease; /* Add transition effect to background-color */
+    &:hover {
+        background-color: green;
+    }
 `;
 const StyledText = styled.p``;
 const StyledInput = styled.input`
