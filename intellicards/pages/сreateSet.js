@@ -111,13 +111,14 @@ const AddSet = styled.button`
   font-size: 16px;
   border:none;
   cursor: pointer;
-  transition: background-color 1.0 ease; /* Add transition effect to background-color */
+  transition: background-color 1.0 ease;
     &:hover {
         background-color: #75C113;
     }
 `;
 const StyledText = styled.p`
   font-weight: bold;
+  font-family: 'Montserrat', sans-serif;
 `;
 const StyledInput = styled.input`
   width: 800px;
@@ -129,6 +130,7 @@ const StyledInput = styled.input`
   padding-left: 10px;
 
   &::placeholder {
+    font-family: 'Montserrat', sans-serif;
     line-height: 50px;
   }
 `;
@@ -156,6 +158,7 @@ const StyledCardInput = styled.input`
 const StyledDiv = styled.div`
   display: flex;
   align-items: center;
+  font-family: 'Montserrat', sans-serif;
   margin-top: 20px;
   width: 1000px;
   & > ${StyledInput}:first-child {
@@ -171,4 +174,5 @@ const StyledQuestionDiv = styled.div`
   gap: 95px;
   margin-bottom:30px;
   position: relative;
+  font-family: 'Montserrat', sans-serif;
 `;
