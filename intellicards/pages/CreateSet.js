@@ -29,8 +29,8 @@ export default function CreateSet() {
       <StyledText>Додати карточки</StyledText>
 
       <StyledQuestionDiv>
-        <QuestionAnswerLine />
-        <QuestionAnswerLine />
+        <StyledCardInput placeholder="Питання"></StyledCardInput>
+        <StyledCardInput placeholder="Відповідь"></StyledCardInput>
       </StyledQuestionDiv>
       <AddCard>Додати ще одну картку</AddCard>
       <AddSet>Створити набір</AddSet>
@@ -63,45 +63,58 @@ const AddSet = styled.button`
     background-color: green;
   }
 `;
-const StyledText = styled.p``;
+const StyledText = styled.p`
+  font-weight: bold;
+`;
 const StyledInput = styled.input`
   width: 800px;
   height: 50px;
   border-radius: 15px;
   background-color: #f3f3f3;
   border: none;
+  outline: none;
+  padding-left: 10px;
 
   &::placeholder {
     color: black;
     line-height: 50px;
-    padding-left: 20px;
   }
 `;
 
-const QuestionAnswerLine = styled.input`
-  width: 460px;
-  height: 0.1px;
+const StyledCardInput = styled.input`
+  padding: 20px 5px;
+  width: 400px;
+  font-size: 16px;
+  height: 36px;
+  margin-top: 30px;
   border: none;
-  background-color: black;
-  border: 0.1;
-  margin-bottom: 10px; /* Adjust as needed */
-`;
+  border-bottom: 0.5px solid black;
+  outline: none;
+  margin-left: 20px;
+  background-color: #f3f3f3;
+  &::placeholder {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px; 
+    padding-bottom: 20px;
+  }
+
+`
+
+
 const StyledDiv = styled.div`
   display: flex;
   align-items: center;
   margin-top: 20px;
   width: 1000px;
   & > ${StyledInput}:first-child {
-    margin-right: 50px; /* Додайте потрібний вам відступ між елементами */
+    margin-right: 50px; 
   }
 `;
 const StyledQuestionDiv = styled.div`
   display: flex;
-  align-items: center;
   height: 110px;
   background-color: #f3f3f3;
   width: 1000px;
-  & > ${QuestionAnswerLine}:first-child {
-    margin-right: 90px;
-  }
+  border-radius: 10px;
+  gap: 95px;
 `;

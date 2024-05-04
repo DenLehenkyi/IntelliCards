@@ -54,7 +54,11 @@ export default function Home() {
       <Header/>
       <Search />
       <CategoriesAndGridDiv>
-        <CategoriesBox cardSets={cardSetsData} onClick={handleCategoryClick} />
+        <CategoriesAndButton>
+          <CategoriesBox cardSets={cardSetsData} onClick={handleCategoryClick} />
+           <Button>Топ користувачів</Button>
+        </CategoriesAndButton>
+        
         <CardSetsGrid allCardSets={cardSetsData}  category={selectedCategory}/>
       </CategoriesAndGridDiv>
     </Center>
@@ -66,4 +70,27 @@ const CategoriesAndGridDiv = styled.div`
    display: flex;
    justify-content: space-between;
 `
+
+const CategoriesAndButton = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+`
+
+const Button = styled.button`
+  width: 200px;
+  height: 45px;
+  background: #C5E898;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+  border: none;
+  font-size: 17px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 25px;
+`
  
+
+
+
