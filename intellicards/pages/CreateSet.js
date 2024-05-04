@@ -109,6 +109,7 @@ const AddSet = styled.button`
   font-weight: bold;
   margin-left: 350px;
   font-size: 16px;
+  border:none;
   cursor: pointer;
   transition: background-color 1.0 ease; /* Add transition effect to background-color */
     &:hover {
