@@ -89,6 +89,10 @@ const Button = styled.button`
   font-weight: 600;
   cursor: pointer;
   margin-top: 25px;
+  transition: background-color 1.0 ease; /* Add transition effect to background-color */
+    &:hover {
+        background-color: #75C113;;
+    }
 `
  
 
