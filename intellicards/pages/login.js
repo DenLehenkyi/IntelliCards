@@ -1,16 +1,14 @@
 import Header from "@/components/Header";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import LoginButton from "@/components/Login/LoginButton";
 import MyInput from "@/components/Login/MyInput";
 import { useRouter } from "next/router";
 import Navigation from "@/components/Navigation";
 import Center from "@/components/Center";
-// import axios from "axios";
-// import { useAuth } from "@/Contexts/AccountContext";
-// import LogoWithoutPurple from "@/components/Logo/LogoWithoutPurple";
-// import { Category } from "@/models/Category";
-// import SubCategory from "@/models/SubCategory";
+import axios from "axios";
+import { useAuth } from "@/Contexts/AccountContext";
+
 
 const LoginPage = ({ toggleDarkMode, categories, subcategories }) => {
   const router = useRouter();
@@ -18,34 +16,40 @@ const LoginPage = ({ toggleDarkMode, categories, subcategories }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-//   const { login } = useAuth();
+  const { login, isLogin } = useAuth();
 
-//   const loginUser = async () => {
-//     if (!email || !password) {
-//       console.error("Please fill in all fields.");
-//       return;
-//     }
-//     try {
-//       // Здійснюємо запит до вашого API для перевірки користувача
-//       const response = await axios.post("/api/loginUser", {
-//         email: email,
-//         password: password,
-//       });
+  useEffect(() => {
+    if (isLogin) {
+      router.push("/user-profile/user-info");
+    }
+  }, [isLogin])
+  
+  const loginUser = async () => {
+    if (!email || !password) {
+      console.error("Please fill in all fields.");
+      return;
+    }
+    try {
+      // Здійснюємо запит до вашого API для перевірки користувача
+      const response = await axios.post("/api/login", {
+        email: email,
+        password: password,
+      });
 
-//       if (response.data.success) {
-//         console.log("User logged in successfully.");
-//         login(response.data);
-//         router.push({
-//           pathname: "/user-profile/user-info",
-//           query: { email: email },
-//         });
-//       } else {
-//         console.error("Invalid email or password.");
-//       }
-//     } catch (error) {
-//       console.error("Error during login:", error);
-//     }
-//   };
+      if (response.data.success) {
+        console.log("User logged in successfully.");
+        login(response.data);
+        router.push({
+          pathname: "/user-profile/user-info",
+          query: { email: email },
+        });
+      } else {
+        console.error("Invalid email or password.");
+      }
+    } catch (error) {
+      console.error("Error during login:", error);
+    }
+  };
 
   const goToRegister = () => {
     router.push("/registration");
@@ -57,6 +61,9 @@ const LoginPage = ({ toggleDarkMode, categories, subcategories }) => {
       <Navigation page={"Увійти"} />
       <Page>
         <Container>
+        
+          {!isLogin && 
+            <>
           <FirstHalf>
             <Text>Ви користувач?</Text>
             <InputWrapper>
@@ -66,12 +73,10 @@ const LoginPage = ({ toggleDarkMode, categories, subcategories }) => {
               <MyInput text={"Пароль"} type={"password"} value={password} setValue={setPassword} theme="auth" />
             </InputWrapper>
             <Wrapper>
-              {/* <LoginButton onClick={loginUser} href={"/"}>
-                УВІЙТИ
-              </LoginButton> */}
-            <LoginButton >
+              <LoginButton onClick={loginUser} href={"/"}>
                 УВІЙТИ
               </LoginButton>
+          
             </Wrapper>
           </FirstHalf>
           <SecondHalf>
@@ -80,6 +85,9 @@ const LoginPage = ({ toggleDarkMode, categories, subcategories }) => {
               <LoginButton onClick={goToRegister}>ЗАРЕЄСТРУВАТИСЬ</LoginButton>
             </Wrapper>
           </SecondHalf>
+             </>
+          }
+     
         </Container>
       </Page>
     </Center>

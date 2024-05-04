@@ -4,12 +4,10 @@ import styled from "styled-components";
 import LoginButton from "@/components/Login/LoginButton";
 import MyInput from "@/components/Login/MyInput";
 import { useRouter } from "next/router";
-// import axios from "axios";
+import axios from "axios";
+import { useAuth } from "@/Contexts/AccountContext";
 // import LogoWithoutPurple from "@/components/Logo/LogoWithoutPurple";
-// import { useAuth } from "@/Contexts/AccountContext";
-// import { Category } from "@/models/Category";
-// import SubCategory from "@/models/SubCategory";
-// import Urls from "@/components/Urls";
+
 import Navigation from "@/components/Navigation";
 import Center from "@/components/Center";
 
@@ -20,34 +18,34 @@ const RegisterPage = ({ toggleDarkMode, categories, subcategories }) => {
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
-//   const { login, isAuthenticated } = useAuth();
+  const { login, isLogin } = useAuth();
 
-//   async function registerUser() {
-//     if (!name || !surname || !email || !password) {
-//       console.error("Please fill in all fields.");
-//       return;
-//     }
-//     try {
-//       const checkUser = await axios.get(`/api/registerUser`, {
-//         email: email,
-//       });
-//       if (!checkUser.data.success) {
-//         alert("User with this email already exists.");
-//         return;
-//       }
-//       const newUser = await axios.post("/api/registerUser", {
-//         name: name,
-//         surname: surname,
-//         email: email,
-//         password: password,
-//       });
-//       login(newUser.data);
-//       console.log(newUser);
-//       router.push("/user-profile/user-info");
-//     } catch (error) {
-//       console.error("Error during registration:", error);
-//     }
-//   }
+  async function registerUser() {
+    if (!name || !surname || !email || !password) {
+      console.error("Please fill in all fields.");
+      return;
+    }
+    try {
+      const checkUser = await axios.get(`/api/register`, {
+        email: email,
+      });
+      if (!checkUser.data.success) {
+        alert("User with this email already exists.");
+        return;
+      }
+      const newUser = await axios.post("/api/register", {
+        name: name,
+        surname: surname,
+        email: email,
+        password: password,
+      });
+      login(newUser.data);
+      console.log(newUser);
+      router.push("/user-profile/user-info");
+    } catch (error) {
+      console.error("Error during registration:", error);
+    }
+  }
 
    const goToLogin = () => {
     router.push("/login");
@@ -72,8 +70,8 @@ const RegisterPage = ({ toggleDarkMode, categories, subcategories }) => {
               <MyInput text={"Пароль"} type={"password"} value={password} setValue={setPassword} theme="auth" />
             </InputWrapper>
             <Wrapper>
-              {/* <LoginButton onClick={registerUser}>ЗАРЕЄСТРУВАТИСЬ</LoginButton> */}
-              <LoginButton >ЗАРЕЄСТРУВАТИСЬ</LoginButton>
+              <LoginButton onClick={registerUser}>ЗАРЕЄСТРУВАТИСЬ</LoginButton>
+             
             </Wrapper>
           </FirstHalf>
           <SecondHalf>

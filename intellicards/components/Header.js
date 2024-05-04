@@ -4,8 +4,10 @@ import Logo from "./Logo";
 import AccountSvg from "./svg/AccountSVG";
 import CreateSetButton from "./Buttons/CreateSetButton";
 import MySetsButton from "./Buttons/MySetButton";
+import { useAuth } from "@/Contexts/AccountContext";
 
 export default function Header() {
+ 
   return (
     <Center>
       <HeaderDiv>

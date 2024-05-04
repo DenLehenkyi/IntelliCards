@@ -5,31 +5,37 @@ import UserEditor from "@/components/UserEditor";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { useAuth } from "@/Contexts/AccountContext";
+import { UrlsDiv } from "@/components/Navigation";
 import Center from "@/components/Center";
-import Navigation from "@/components/Navigation";
 
 const UserProfilePage = ({
   path,
+  
 }) => {
   const router = useRouter();
-//   const { logout, user } = useAuth();
+  const { logout, user } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [userOrders, setUserOrders] = useState([]);
-  const [product, setProduct] = useState([]);
-//   const userId = user ? user.data._id : null;
-//   console.log(userId);
-//   useEffect(() => {
-//     const isMobileDevice = window.innerWidth <= 600;
-//     setIsMobile(isMobileDevice);
-//   }, []);
 
+  const userId = user ? user.data._id : null;
+  console.log(userId);
   useEffect(() => {
-    if (!renderInfo()) {
-      router.push("/user-profile/user-info");
-    }
+    const isMobileDevice = window.innerWidth <= 600;
+    setIsMobile(isMobileDevice);
   }, []);
 
+  // useEffect(() => {
+  //   if (!renderInfo()) {
+  //     router.push("/user-profile/user-info");
+  //   }
+  // }, [path]);
+  useEffect(() => {
+    // const info = renderInfo();
+    // if (!info) {
+    //   router.push("/user-profile/user-info");
+    // }
+    router.push("/user-profile/user-info");
+  }, [path]);
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -41,6 +47,7 @@ const UserProfilePage = ({
   const renderInfo = () => {
     switch (path) {
       case "user-info":
+        console.log("test");
         return <UserEditor />;
 
       default:
@@ -50,8 +57,9 @@ const UserProfilePage = ({
 
   return (
     <>
-      <Header/>
-      <Navigation page={"Мій акаунт"} />
+      <Header
+      />
+      <UrlsDiv page={"Мій акаунт"} />
       {isMobile && (
         <>
           <MobileMenuButton onClick={toggleMenu}>
@@ -72,6 +80,11 @@ const UserProfilePage = ({
           </MobileMenuButton>
           <MobileMenu isOpen={isMenuOpen}>
             <MenuItem>
+              <Link href="/user-profile/my-shop" onClick={closeMenu}>
+                Мої покупки
+              </Link>
+            </MenuItem>
+            <MenuItem>
               <Link href="/user-profile/user-info" onClick={closeMenu}>
                 Дані облікового запису
               </Link>
@@ -90,8 +103,23 @@ const UserProfilePage = ({
           </MobileMenu>
         </>
       )}
+      <Center>
+      {!isMobile && (
+        <Menu>
+          <Text>МІЙ АКАУНТ</Text>
+          <Point href="/user-profile/my-shop" isActive={path === "my-shop"}>
+            Мої покупки
+          </Point>
+          <Point href="/user-profile/user-info" isActive={path === "user-info"}>
+            Дані облікового запису
+          </Point>
+          <Point isActive={false} href="/login" onClick={logout}>
+            Вийти
+          </Point>
+        </Menu>
+      )}
 
- 
+      </Center>
       
       <Page>{renderInfo()}</Page>
     </>
@@ -178,16 +206,6 @@ const Page = styled.div`
   }
 `;
 
-// export async function getServerSideProps(context) {
-//   const orders = await MyOrder.find({}, null);
-//   const products = await Product.find({}, null);
-//   return {
-//     props: {
-//       path: context.params.path[0],
-//       orders: JSON.parse(JSON.stringify(orders)),
-//       products: JSON.parse(JSON.stringify(products)),
-//     },
-//   };
-// }
 
-    export default UserProfilePage;
+
+export default UserProfilePage;

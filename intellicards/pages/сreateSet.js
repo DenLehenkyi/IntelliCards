@@ -6,7 +6,6 @@ import Navigation from "@/components/Navigation";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-
 export default function CreateSet() {
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
@@ -81,7 +80,7 @@ const DeleteIcon = styled.div`
   top: 5px;
   right: 5px;
   cursor: pointer;
-  z-index:555;
+  z-index: 555;
 `;
 
 const AddCard = styled.button`
@@ -94,11 +93,11 @@ const AddCard = styled.button`
   margin-top: 50px;
   font-size: 16px;
   border-radius: 15px;
-  cursor:pointer;
-  transition: background-color 1.0 ease; /* Add transition effect to background-color */
-    &:hover {
-        background-color: #75C113;
-    }
+  cursor: pointer;
+  transition: background-color 1 ease;
+  &:hover {
+    background-color: #75c113;
+  }
 `;
 const AddSet = styled.button`
   width: 380px;
@@ -109,16 +108,16 @@ const AddSet = styled.button`
   font-weight: bold;
   margin-left: 350px;
   font-size: 16px;
-  border:none;
+  border: none;
   cursor: pointer;
-  transition: background-color 1.0 ease;
-    &:hover {
-        background-color: #75C113;
-    }
+  transition: background-color 1 ease;
+  &:hover {
+    background-color: #75c113;
+  }
 `;
 const StyledText = styled.p`
   font-weight: bold;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
 `;
 const StyledInput = styled.input`
   width: 800px;
@@ -130,7 +129,7 @@ const StyledInput = styled.input`
   padding-left: 10px;
 
   &::placeholder {
-    font-family: 'Montserrat', sans-serif;
+    font-family: "Montserrat", sans-serif;
     line-height: 50px;
   }
 `;
@@ -147,22 +146,20 @@ const StyledCardInput = styled.input`
   margin-left: 20px;
   background-color: #f3f3f3;
   &::placeholder {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 16px; 
+    font-family: "Montserrat", sans-serif;
+    font-size: 16px;
     padding-bottom: 20px;
   }
-
-`
-
+`;
 
 const StyledDiv = styled.div`
   display: flex;
   align-items: center;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   margin-top: 20px;
   width: 1000px;
   & > ${StyledInput}:first-child {
-    margin-right: 50px; 
+    margin-right: 50px;
   }
 `;
 const StyledQuestionDiv = styled.div`
@@ -172,7 +169,7 @@ const StyledQuestionDiv = styled.div`
   width: 1000px;
   border-radius: 10px;
   gap: 95px;
-  margin-bottom:30px;
+  margin-bottom: 30px;
   position: relative;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
 `;

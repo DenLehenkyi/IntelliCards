@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-// import axios from "axios";
+import axios from "axios";
 import MyInput from "./Login/MyInput";
 import LoginButton from "./Login/LoginButton";
-// import { useAuth } from "@/Contexts/AccountContext";
+import { useAuth } from "@/Contexts/AccountContext";
 import Center from "./Center";
 
 
 const UserEditor = () => {
-//   const { user } = useAuth(); // Отримання поточного користувача з контексту
+ const { user } = useAuth(); // Отримання поточного користувача з контексту
   const { setUser } = useAuth();
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
@@ -17,51 +17,52 @@ const UserEditor = () => {
   const [checkPassword, setCheckPassword] = useState("");
   const [emailField, setEmailField] = useState("");
   const [userId, setUserId] = useState("");
+  console.log("soso");
+  
+  useEffect(() => {
+    if (user) {
+      console.log(user);
+      setName(user.data.name);
+      setSurname(user.data.surname);
+      setPassword(user.data.password);
+      setEmailField(user.data.email);
+      setUserId(user.data._id);
+    }
+  }, [user]);
 
-//   useEffect(() => {
-//     if (user) {
-//       console.log(user);
-//       setName(user.data.name);
-//       setSurname(user.data.surname);
-//       setPassword(user.data.password);
-//       setEmailField(user.data.email);
-//       setUserId(user.data._id);
-//     }
-//   }, [user]);
+  const saveData = async () => {
+    try {
+      const response = await axios.put(`/api/login?_id=${userId}`, {
+        _id: userId,
+        email: emailField,
+        name,
+        surname,
+        password,
+      });
+      setUser(response.data);
+      localStorage.setItem('user', JSON.stringify(response.data));
+      console.log("User data updated:", response.data);
+    } catch (error) {
+      console.error("Error updating user data:", error);
+    }
+  };
 
-//   const saveData = async () => {
-//     try {
-//       const response = await axios.put(`/api/loginUser?_id=${userId}`, {
-//         _id: userId,
-//         email: emailField,
-//         name,
-//         surname,
-//         password,
-//       });
-//       setUser(response.data);
-//       localStorage.setItem('user', JSON.stringify(response.data));
-//       console.log("User data updated:", response.data);
-//     } catch (error) {
-//       console.error("Error updating user data:", error);
-//     }
-//   };
-
-//   const savePassword = async () => {
-//     try {
-//       const response = await axios.put(`/api/loginUser?_id=${userId}`, {
-//         _id: userId,
-//         email: emailField,
-//         name,
-//         surname,
-//         password: newPassword,
-//       });
-//       setUser(response.data);
-//       localStorage.setItem('user', JSON.stringify(response.data));
-//       console.log("Password updated:", response.data);
-//     } catch (error) {
-//       console.error("Error updating password:", error);
-//     }
-//   };
+  const savePassword = async () => {
+    try {
+      const response = await axios.put(`/api/login?_id=${userId}`, {
+        _id: userId,
+        email: emailField,
+        name,
+        surname,
+        password: newPassword,
+      });
+      setUser(response.data);
+      localStorage.setItem('user', JSON.stringify(response.data));
+      console.log("Password updated:", response.data);
+    } catch (error) {
+      console.error("Error updating password:", error);
+    }
+  };
 
   return (
     <Center>
@@ -97,7 +98,7 @@ const UserEditor = () => {
             </NameWrap>
           </InputContainer>
         </InputWrapper>
-        {/* <LoginButton onClick={saveData}>Змінити дані користувача</LoginButton> */}
+        <LoginButton onClick={saveData}>Змінити дані користувача</LoginButton>
         <LoginButton >Змінити дані користувача</LoginButton>
         <InputWrapper>
           <InputContainer>
@@ -129,7 +130,7 @@ const UserEditor = () => {
             />
           </InputContainer>
         </InputWrapper>
-        {/* <LoginButton onClick={savePassword}>Змінити пароль</LoginButton> */}
+        <LoginButton onClick={savePassword}>Змінити пароль</LoginButton>
         <LoginButton >Змінити пароль</LoginButton>
       </Page>
     </Center>
