@@ -77,7 +77,7 @@ export default function CreateSet() {
   );
 }
 const DeleteIcon = styled.div`
-  position: relative;
+  position: absolute;
   top: 5px;
   right: 5px;
   cursor: pointer;
@@ -128,7 +128,6 @@ const StyledInput = styled.input`
   padding-left: 10px;
 
   &::placeholder {
-    color: black;
     line-height: 50px;
   }
 `;
@@ -170,4 +169,5 @@ const StyledQuestionDiv = styled.div`
   border-radius: 10px;
   gap: 95px;
   margin-bottom:30px;
+  position: relative;
 `;
