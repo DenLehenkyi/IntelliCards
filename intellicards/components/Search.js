@@ -50,6 +50,11 @@ const FilterButton = styled.button`
   margin-right: 0;
   padding: 0;
   cursor: pointer;
+  
+  transition: background-color 1.0 ease; /* Add transition effect to background-color */
+    &:hover {
+        background-color: #75C113;
+    }
 `;
 
 const ButtonText = styled.span`
