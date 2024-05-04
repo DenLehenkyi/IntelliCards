@@ -1,13 +1,39 @@
+import React, { useState } from "react";
+import styled from "styled-components";
 import Center from "@/components/Center";
 import Header from "@/components/Header";
 import Navigation from "@/components/Navigation";
-import { useState } from "react";
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import styled from "styled-components";
 
 export default function CreateSet() {
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
+  const [cards, setCards] = useState([{ question: "", answer: "" }]);
+
+  const handleAddCard = () => {
+    setCards([...cards, { question: "", answer: "" }]);
+  };
+
+  const handleQuestionChange = (index, value) => {
+    const newCards = [...cards];
+    newCards[index].question = value;
+    setCards(newCards);
+  };
+
+  const handleAnswerChange = (index, value) => {
+    const newCards = [...cards];
+    newCards[index].answer = value;
+    setCards(newCards);
+  };
+
+  const handleDeleteCard = (index) => {
+    const newCards = [...cards];
+    newCards.splice(index, 1);
+    setCards(newCards);
+  };
+
   return (
     <Center>
       <Header />
@@ -18,25 +44,46 @@ export default function CreateSet() {
           placeholder="Введіть назву..."
           value={name}
           onChange={(e) => setName(e.target.value)}
-        ></StyledInput>
+        />
         <StyledInput
           placeholder="Введіть категорію..."
           value={category}
           onChange={(e) => setCategory(e.target.value)}
-        ></StyledInput>
+        />
       </StyledDiv>
 
       <StyledText>Додати карточки</StyledText>
 
-      <StyledQuestionDiv>
-        <StyledCardInput placeholder="Питання"></StyledCardInput>
-        <StyledCardInput placeholder="Відповідь"></StyledCardInput>
-      </StyledQuestionDiv>
-      <AddCard>Додати ще одну картку</AddCard>
+      {cards.map((card, index) => (
+        <StyledQuestionDiv key={index}>
+          <DeleteIcon onClick={() => handleDeleteCard(index)}>
+            <FontAwesomeIcon icon={faTimes} />
+          </DeleteIcon>
+          <StyledCardInput
+            placeholder="Питання"
+            value={card.question}
+            onChange={(e) => handleQuestionChange(index, e.target.value)}
+          />
+          <StyledCardInput
+            placeholder="Відповідь"
+            value={card.answer}
+            onChange={(e) => handleAnswerChange(index, e.target.value)}
+          />
+        </StyledQuestionDiv>
+      ))}
+      <AddCard onClick={handleAddCard}>Додати ще одну картку</AddCard>
       <AddSet>Створити набір</AddSet>
     </Center>
   );
 }
+const DeleteIcon = styled.div`
+  position: relative;
+  top: 5px;
+  right: 5px;
+  cursor: pointer;
+  z-index:555;
+`;
+
 const AddCard = styled.button`
   width: 1000px;
   height: 104px;
@@ -47,6 +94,11 @@ const AddCard = styled.button`
   margin-top: 50px;
   font-size: 16px;
   border-radius: 15px;
+  cursor:pointer;
+  transition: background-color 1.0 ease; /* Add transition effect to background-color */
+    &:hover {
+        background-color: #75C113;
+    }
 `;
 const AddSet = styled.button`
   width: 380px;
@@ -58,10 +110,10 @@ const AddSet = styled.button`
   margin-left: 350px;
   font-size: 16px;
   cursor: pointer;
-  transition: background-color 1 ease; /* Add transition effect to background-color */
-  &:hover {
-    background-color: green;
-  }
+  transition: background-color 1.0 ease; /* Add transition effect to background-color */
+    &:hover {
+        background-color: #75C113;
+    }
 `;
 const StyledText = styled.p`
   font-weight: bold;
@@ -117,4 +169,5 @@ const StyledQuestionDiv = styled.div`
   width: 1000px;
   border-radius: 10px;
   gap: 95px;
+  margin-bottom:30px;
 `;
