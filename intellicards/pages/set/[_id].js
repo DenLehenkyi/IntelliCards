@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import Navigation from "@/components/Navigation";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+import Link from "next/link";
 
 const cardSetsData = [
   {
@@ -90,7 +91,6 @@ export default function SetPage({ _id }) {
         (card) => card.setId === set[0]._id
       );
       setCards(filteredCards);
-      console.log(cards);
     }
   }, [set[0]._id]);
 
@@ -101,7 +101,11 @@ export default function SetPage({ _id }) {
       <Container>
         <ButtonAndBox>
           <CardBox card={set[0]} />
-          <Button>Перейти до вивчення</Button>
+          <StyledLink href={"/set/study/" + _id}>
+             <Button>Перейти до вивчення</Button>
+
+          </StyledLink>
+
         </ButtonAndBox>
 
         <CardsInSetGrid cards={cards} />
@@ -142,3 +146,7 @@ const ButtonAndBox = styled.div`
   display: flex;
   flex-direction: column;
 `;
+const StyledLink = styled(Link)`
+   text-decoration: none;
+   color: inherit;
+`
