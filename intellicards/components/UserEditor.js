@@ -18,7 +18,7 @@ const UserEditor = () => {
   const [emailField, setEmailField] = useState("");
   const [userId, setUserId] = useState("");
   console.log("soso");
-  
+
   useEffect(() => {
     if (user) {
       console.log(user);
@@ -99,7 +99,6 @@ const UserEditor = () => {
           </InputContainer>
         </InputWrapper>
         <LoginButton onClick={saveData}>Змінити дані користувача</LoginButton>
-        <LoginButton >Змінити дані користувача</LoginButton>
         <InputWrapper>
           <InputContainer>
             <Text>Пароль</Text>
@@ -131,7 +130,7 @@ const UserEditor = () => {
           </InputContainer>
         </InputWrapper>
         <LoginButton onClick={savePassword}>Змінити пароль</LoginButton>
-        <LoginButton >Змінити пароль</LoginButton>
+      
       </Page>
     </Center>
   );

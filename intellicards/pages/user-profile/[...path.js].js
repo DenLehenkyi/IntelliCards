@@ -9,10 +9,10 @@ import { UrlsDiv } from "@/components/Navigation";
 import Center from "@/components/Center";
 
 const UserProfilePage = ({
-  path,
+ 
   
 }) => {
-  const router = useRouter();
+  const router = useRouter()  ;
   const { logout, user } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -23,19 +23,15 @@ const UserProfilePage = ({
     const isMobileDevice = window.innerWidth <= 600;
     setIsMobile(isMobileDevice);
   }, []);
+  const path="user-info";
 
-  // useEffect(() => {
-  //   if (!renderInfo()) {
-  //     router.push("/user-profile/user-info");
-  //   }
-  // }, [path]);
+ console.log(path);
   useEffect(() => {
-    // const info = renderInfo();
-    // if (!info) {
-    //   router.push("/user-profile/user-info");
-    // }
-    router.push("/user-profile/user-info");
-  }, [path]);
+    if (path !== "user-info") {
+      router.push("/user-profile/user-info");
+    }
+  }, []);
+
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -52,6 +48,7 @@ const UserProfilePage = ({
 
       default:
         return null;
+        console.log(path);
     }
   };
 
@@ -80,13 +77,9 @@ const UserProfilePage = ({
           </MobileMenuButton>
           <MobileMenu isOpen={isMenuOpen}>
             <MenuItem>
-              <Link href="/user-profile/my-shop" onClick={closeMenu}>
-                Мої покупки
-              </Link>
-            </MenuItem>
-            <MenuItem>
               <Link href="/user-profile/user-info" onClick={closeMenu}>
                 Дані облікового запису
+                
               </Link>
             </MenuItem>
             <MenuItem>
@@ -107,9 +100,6 @@ const UserProfilePage = ({
       {!isMobile && (
         <Menu>
           <Text>МІЙ АКАУНТ</Text>
-          <Point href="/user-profile/my-shop" isActive={path === "my-shop"}>
-            Мої покупки
-          </Point>
           <Point href="/user-profile/user-info" isActive={path === "user-info"}>
             Дані облікового запису
           </Point>
@@ -117,10 +107,11 @@ const UserProfilePage = ({
             Вийти
           </Point>
         </Menu>
-      )}
-
-      </Center>
-      
+      )} 
+       </Center>
+       <Page>
+   
+    </Page>
       <Page>{renderInfo()}</Page>
     </>
   );

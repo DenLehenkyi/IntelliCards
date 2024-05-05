@@ -5,7 +5,7 @@ export default function CreateSetButton({ children }) {
     const router = useRouter();
 
     const handleClick = () => {
-        router.push("/CreateSet"); // Assuming "/CreateSet" is the correct route
+        router.push("/CreateSet"); 
     };
 
     return (

@@ -10,7 +10,7 @@ import axios from "axios";
 import { useAuth } from "@/Contexts/AccountContext";
 
 
-const LoginPage = ({ toggleDarkMode, categories, subcategories }) => {
+const LoginPage = () => {
   const router = useRouter();
 
   const [email, setEmail] = useState("");
@@ -23,7 +23,7 @@ const LoginPage = ({ toggleDarkMode, categories, subcategories }) => {
       router.push("/user-profile/user-info");
     }
   }, [isLogin])
-  
+
   const loginUser = async () => {
     if (!email || !password) {
       console.error("Please fill in all fields.");
