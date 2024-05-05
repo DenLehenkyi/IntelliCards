@@ -8,11 +8,8 @@ import { useAuth } from "@/Contexts/AccountContext";
 import { UrlsDiv } from "@/components/Navigation";
 import Center from "@/components/Center";
 
-const UserProfilePage = ({
- 
-  
-}) => {
-  const router = useRouter()  ;
+const UserProfilePage = ({}) => {
+  const router = useRouter();
   const { logout, user } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -23,9 +20,9 @@ const UserProfilePage = ({
     const isMobileDevice = window.innerWidth <= 600;
     setIsMobile(isMobileDevice);
   }, []);
-  const path="user-info";
+  const path = "user-info";
 
- console.log(path);
+  console.log(path);
   useEffect(() => {
     if (path !== "user-info") {
       router.push("/user-profile/user-info");
@@ -54,11 +51,11 @@ const UserProfilePage = ({
 
   return (
     <>
-      <Header
-      />
-      <UrlsDiv page={"Мій акаунт"} />
+      <Header />
+      
       {isMobile && (
         <>
+        
           <MobileMenuButton onClick={toggleMenu}>
             <MenuIcon
               xmlns="http://www.w3.org/2000/svg"
@@ -97,21 +94,22 @@ const UserProfilePage = ({
         </>
       )}
       <Center>
-      {!isMobile && (
-        <Menu>
-          <Text>МІЙ АКАУНТ</Text>
-          <Point href="/user-profile/user-info" isActive={path === "user-info"}>
-            Дані облікового запису
-          </Point>
-          <Point isActive={false} href="/login" onClick={logout}>
-            Вийти
-          </Point>
-        </Menu>
-      )} 
-       </Center>
-       <Page>
-   
-    </Page>
+        {!isMobile && (
+          <Menu>
+            <Text>МІЙ АКАУНТ</Text>
+            <Point
+              href="/user-profile/user-info"
+              isActive={path === "user-info"}
+            >
+              Дані облікового запису
+            </Point>
+            <Point isActive={false} href="/login" onClick={logout}>
+              Вийти
+            </Point>
+          </Menu>
+        )}
+      </Center>
+      <Page></Page>
       <Page>{renderInfo()}</Page>
     </>
   );
@@ -120,7 +118,6 @@ const UserProfilePage = ({
 const Point = styled(Link)`
   text-decoration: none;
   color: black;
-
 `;
 
 const Text = styled.div`
@@ -128,7 +125,6 @@ const Text = styled.div`
   font-size: 20px;
   text-align: left;
   padding-bottom: 10px;
-
 `;
 const Menu = styled.div`
   display: flex;
@@ -196,7 +192,5 @@ const Page = styled.div`
     margin-top: 80%;
   }
 `;
-
-
 
 export default UserProfilePage;

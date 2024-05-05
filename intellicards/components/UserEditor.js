@@ -5,10 +5,10 @@ import MyInput from "./Login/MyInput";
 import LoginButton from "./Login/LoginButton";
 import { useAuth } from "@/Contexts/AccountContext";
 import Center from "./Center";
-
+import Navigation from "./Navigation";
 
 const UserEditor = () => {
- const { user } = useAuth(); // Отримання поточного користувача з контексту
+  const { user } = useAuth(); // Отримання поточного користувача з контексту
   const { setUser } = useAuth();
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
@@ -40,7 +40,7 @@ const UserEditor = () => {
         password,
       });
       setUser(response.data);
-      localStorage.setItem('user', JSON.stringify(response.data));
+      localStorage.setItem("user", JSON.stringify(response.data));
       console.log("User data updated:", response.data);
     } catch (error) {
       console.error("Error updating user data:", error);
@@ -57,7 +57,7 @@ const UserEditor = () => {
         password: newPassword,
       });
       setUser(response.data);
-      localStorage.setItem('user', JSON.stringify(response.data));
+      localStorage.setItem("user", JSON.stringify(response.data));
       console.log("Password updated:", response.data);
     } catch (error) {
       console.error("Error updating password:", error);
@@ -66,7 +66,9 @@ const UserEditor = () => {
 
   return (
     <Center>
+      <Navigation page="Дані облікового запису" />
       <Page>
+        
         <InputWrapper>
           <Text>Дані користувача</Text>
           <InputContainer>
@@ -130,7 +132,6 @@ const UserEditor = () => {
           </InputContainer>
         </InputWrapper>
         <LoginButton onClick={savePassword}>Змінити пароль</LoginButton>
-      
       </Page>
     </Center>
   );
@@ -141,8 +142,9 @@ const Page = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 50px;
-  margin-left: 5%;
+  height: 230px;
+  margin-left: 20%;
+  font-family: "Montserrat", sans-serif;
   @media only screen and (max-width: 600px) {
     width: 364px;
     margin-left: 8px;
