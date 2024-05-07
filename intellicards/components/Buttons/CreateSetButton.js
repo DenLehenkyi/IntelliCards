@@ -23,10 +23,13 @@ const StyledButton = styled.button`
     border: none;
     font-weight: bold;
     font-size: 16px;
-    background-color: #c5e898;
+    border: 2px solid  #75c113;
+    color: #75C113;
     cursor: pointer;
     transition: background-color 1.0 ease; /* Add transition effect to background-color */
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     &:hover {
-        background-color: #75C113;;
+        background-color: #75C113;
+        color: white;
     }
 `;

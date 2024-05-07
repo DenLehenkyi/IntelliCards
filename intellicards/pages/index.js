@@ -3,6 +3,7 @@ import CategoriesBox from "@/components/Categories";
 import Center from "@/components/Center";
 import Header from "@/components/Header";
 import Search from "@/components/Search";
+import Link from "next/link";
 import { useState } from "react";
 import styled from "styled-components";
 const cardSetsData = [
@@ -56,7 +57,10 @@ export default function Home() {
       <CategoriesAndGridDiv>
         <CategoriesAndButton>
           <CategoriesBox cardSets={cardSetsData} onClick={handleCategoryClick} />
-           <Button>Топ користувачів</Button>
+          <StyledLink href={"/top_users"}>
+            <Button>Топ користувачів</Button>
+          </StyledLink>
+
         </CategoriesAndButton>
         
         <CardSetsGrid allCardSets={cardSetsData}  category={selectedCategory}/>
@@ -93,6 +97,11 @@ const Button = styled.button`
     &:hover {
         background-color: #75C113;;
     }
+`
+
+const StyledLink = styled(Link)`
+   color: inherit;
+   text-decoration: none;
 `
  
 

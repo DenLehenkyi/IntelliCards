@@ -61,4 +61,5 @@ const ButtonText = styled.span`
   margin-left: 35px; 
   font-family: 'Montserrat', sans-serif;
   font-size: 16px;
+  font-weight: 600;
 `;

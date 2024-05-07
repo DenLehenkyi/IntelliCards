@@ -9,14 +9,17 @@ const StyledButton = styled.button`
   height: 40px;
   margin-left:300px;
   border-radius: 20px;
-  border: none;
+  border: 2px solid  #75c113;
   font-weight: bold;
   font-size: 16px;
   font-family: 'Montserrat', sans-serif;
-  background-color: #c5e898;
+  color: #75c113;
+  background-color: #f3f3f3;
   cursor: pointer;
-  transition: background-color 1.0 ease; /* Add transition effect to background-color */
+  transition: background-color 1.0 ease;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     &:hover {
         background-color: #75C113;
+        color: white;
     }
 `;

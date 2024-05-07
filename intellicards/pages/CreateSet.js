@@ -70,7 +70,14 @@ export default function CreateSet() {
           />
         </StyledQuestionDiv>
       ))}
+      <ButtonDiv>
       <AddCard onClick={handleAddCard}>Додати ще одну картку</AddCard>
+      </ButtonDiv>
+      <CheckBoxDiv>
+      <CheckBox type="checkbox" id="checkboxId" />
+      <label htmlFor="checkboxId">Зробити публічним</label>
+      </CheckBoxDiv>
+
       <AddSet>Створити набір</AddSet>
     </Center>
   );
@@ -83,27 +90,43 @@ const DeleteIcon = styled.div`
   z-index: 555;
 `;
 
+const CheckBoxDiv = styled.div`
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+  gap: 5px;
+`
+
+const CheckBox = styled.input`
+  width: 20px;
+  height: 20px;
+
+`
+
 const AddCard = styled.button`
-  width: 1000px;
-  height: 104px;
+  width: 300px;
+  height: 50px;
   text-align: center;
   font-weight: bold;
   background-color: #f3f3f3;
   border: none;
-  margin-top: 50px;
+  margin-top: 20px;
   font-size: 16px;
   border-radius: 15px;
   cursor: pointer;
+  border: 2px solid  #75c113;
+  color:  #75c113;
   transition: background-color 1 ease;
   &:hover {
     background-color: #75c113;
+    color: white;
   }
 `;
 const AddSet = styled.button`
-  width: 380px;
-  height: 62px;
+  width: 300px;
+  height: 50px;
   border-radius: 15px;
-  margin-top: 150px;
+  margin-top: 50px;
   background-color: #c5e898;
   font-weight: bold;
   margin-left: 350px;
@@ -111,6 +134,8 @@ const AddSet = styled.button`
   border: none;
   cursor: pointer;
   transition: background-color 1 ease;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  margin-bottom: 25px;
   &:hover {
     background-color: #75c113;
   }
@@ -131,6 +156,7 @@ const StyledInput = styled.input`
   &::placeholder {
     font-family: "Montserrat", sans-serif;
     line-height: 50px;
+    font-size: 15px;
   }
 `;
 
@@ -173,3 +199,8 @@ const StyledQuestionDiv = styled.div`
   position: relative;
   font-family: "Montserrat", sans-serif;
 `;
+
+const ButtonDiv = styled.div`
+
+
+`
