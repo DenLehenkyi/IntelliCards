@@ -15,7 +15,7 @@ const Button = styled.button`
   font-size: 16px;
   color: #75C113;
   cursor: pointer;
-  width: 200px;
+  width: 300px;
   border-radius: 10px;
   font-family: 'Montserrat', sans-serif;
   font-weight: 600;

@@ -8,7 +8,7 @@ import Center from "./Center";
 import Navigation from "./Navigation";
 
 const UserEditor = () => {
-  const { user } = useAuth(); // Отримання поточного користувача з контексту
+  const { user } = useAuth(); 
   const { setUser } = useAuth();
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
@@ -66,7 +66,6 @@ const UserEditor = () => {
 
   return (
     <Center>
-      <Navigation page="Дані облікового запису" />
       <Page>
         
         <InputWrapper>

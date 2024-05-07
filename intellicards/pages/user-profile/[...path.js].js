@@ -5,7 +5,7 @@ import UserEditor from "@/components/UserEditor";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { useAuth } from "@/Contexts/AccountContext";
-import { UrlsDiv } from "@/components/Navigation";
+import Navigation, { UrlsDiv } from "@/components/Navigation";
 import Center from "@/components/Center";
 
 const UserProfilePage = ({}) => {
@@ -45,13 +45,13 @@ const UserProfilePage = ({}) => {
 
       default:
         return null;
-        console.log(path);
     }
   };
 
   return (
     <>
       <Header />
+      <Navigation page="Дані облікового запису" />
       
       {isMobile && (
         <>
@@ -96,7 +96,7 @@ const UserProfilePage = ({}) => {
       <Center>
         {!isMobile && (
           <Menu>
-            <Text>МІЙ АКАУНТ</Text>
+            <Text>Мій акаунт</Text>
             <Point
               href="/user-profile/user-info"
               isActive={path === "user-info"}
@@ -121,10 +121,10 @@ const Point = styled(Link)`
 `;
 
 const Text = styled.div`
-  font-family: Rubik Mono One;
   font-size: 20px;
   text-align: left;
   padding-bottom: 10px;
+  font-weight: 600;
 `;
 const Menu = styled.div`
   display: flex;
