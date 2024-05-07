@@ -46,6 +46,7 @@ export default function CardSetsGrid({allCardSets, category}){
 const SetsDiv = styled.div`
    margin-top: 20px;
    width: 73%;
+   margin-left:16px;
    height: auto;
    background: #F3F3F3;
    border-radius: 10px;

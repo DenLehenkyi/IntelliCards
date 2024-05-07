@@ -1,7 +1,18 @@
 import styled from "styled-components";
+import { useRouter } from "next/router";
 
 export default function MySetsButton({ children }) {
-  return <StyledButton>{children}</StyledButton>;
+  const router = useRouter();
+
+  const handleClick = () => {
+      router.push("/sets/mySets"); 
+  };
+
+  return (
+      <StyledButton onClick={handleClick}>
+          {children}
+      </StyledButton>
+  );
 }
 
 const StyledButton = styled.button`
