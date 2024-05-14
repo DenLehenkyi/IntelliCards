@@ -25,14 +25,24 @@ export default async function handle(req, res) {
     }
   }
   if (method === "GET") {
+    const { cardSetId } = req.query;
+
     try {
-      const cards = await CardSet.find();
-      res.status(200).json({ success: true, data: cards });
+      const cardSet = await CardSet.findById(cardSetId);
+
+      if (!cardSet) {
+        return res
+          .status(404)
+          .json({ success: false, message: "CardSet not found" });
+      }
+
+      res.status(200).json({ success: true, data: cardSet });
     } catch (error) {
-      res.status(500).json({ success: false, error: error.message });
+      console.error("Error fetching CardSet:", error);
+      res.status(500).json({ success: false, message: "Server error" });
     }
   } else {
-    res.status(405).json({ success: false, error: "Method Not Allowed" });
+    res.status(405).json({ success: false, message: "Method not allowed" });
   }
   if (method === "PUT") {
     const { cardSetId } = req.body;

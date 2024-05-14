@@ -21,14 +21,24 @@ export default async function handle(req, res) {
     }
   }
   if (method === "GET") {
+    const { cardId } = req.query;
+
     try {
-      const cards = await Card.find();
-      res.status(200).json({ success: true, data: cards });
+      const foundedCard = await Card.findById(cardId);
+
+      if (!foundedCard) {
+        return res
+          .status(404)
+          .json({ success: false, message: "card not found" });
+      }
+
+      res.status(200).json({ success: true, data: foundedCard });
     } catch (error) {
-      res.status(500).json({ success: false, error: error.message });
+      console.error("Error fetching card:", error);
+      res.status(500).json({ success: false, message: "Server error" });
     }
   } else {
-    res.status(405).json({ success: false, error: "Method Not Allowed" });
+    res.status(405).json({ success: false, message: "Method not allowed" });
   }
   if (method === "PUT") {
     const { cardId } = req.body;
@@ -66,7 +76,7 @@ export default async function handle(req, res) {
           return res
             .status(404)
             .json({ success: false, message: "Card not found" });
-        } 
+        }
 
         res
           .status(200)

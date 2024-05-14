@@ -9,6 +9,13 @@ const cardSetSchema = new Schema({
     IsPublic: { type: Boolean, default: true },
 });
 
-const CardSet = model("CardSet", cardSetSchema);
 
-export { CardSet };
+let CardSet;
+
+try {
+    CardSet = model("CardSet");
+} catch (error) {
+    CardSet = model("CardSet", cardSetSchema);
+}
+
+export { CardSet as CardSet };

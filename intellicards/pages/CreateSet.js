@@ -13,7 +13,8 @@ export default function CreateSet() {
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
   const [cards, setCards] = useState([{ question: "", answer: "" }]);
-  const {userId} = useAuth();
+  const { userId, user } = useAuth();
+  const newCardsId = [];
 
   async function addCards() {
     try {
@@ -21,9 +22,11 @@ export default function CreateSet() {
         const newCard = await axios.post("/api/newCard", {
           question: card.question,
           answer: card.answer,
-          image: ""
+          image: "",
         });
+        newCardsId.push(newCard.data.data._id);
         console.log(newCard);
+        console.log(newCardsId);
       }
     } catch (error) {
       console.error("Error during adding cards", error);
@@ -31,21 +34,27 @@ export default function CreateSet() {
   }
 
   const handleCreateSet = async () => {
+    await addCards();
+
+    console.log(newCardsId);
     try {
       const ispublic = document.getElementById("checkboxId").checked;
-      // await createCardSet({ name, category,userId, rating: 0, isPublic: ispublic, });
-      
+      const newCardSet = await axios.post("/api/cardSet", {
+        name,
+        category,
+        cards: newCardsId,
+        userId,
+        rating: 0,
+        IsPublic: ispublic,
+      });
+      console.log(newCardSet);
       setName("");
       setCategory("");
       // setCards([{ question: "", answer: "" }]);
-  
-  
     } catch (error) {
       console.error("Error creating card set", error);
-     
     }
   };
-  
 
   const handleAddCard = () => {
     setCards([...cards, { question: "", answer: "" }]);
@@ -107,14 +116,15 @@ export default function CreateSet() {
         </StyledQuestionDiv>
       ))}
       <ButtonDiv>
-      <AddCard onClick={handleAddCard}>Додати ще одну картку</AddCard>
+        <AddCard onClick={handleAddCard}>Додати ще одну картку</AddCard>
       </ButtonDiv>
       <CheckBoxDiv>
-      <CheckBox type="checkbox" id="checkboxId" />
-      <label htmlFor="checkboxId">Зробити публічним</label>
+        <CheckBox type="checkbox" id="checkboxId" />
+        <label htmlFor="checkboxId">Зробити публічним</label>
       </CheckBoxDiv>
 
       <AddSet onClick={handleCreateSet}>Створити набір</AddSet>
+      {/* <AddSet onClick={addCards}>Створити набір</AddSet> */}
     </Center>
   );
 }
@@ -131,13 +141,12 @@ const CheckBoxDiv = styled.div`
   align-items: center;
   margin-top: 20px;
   gap: 5px;
-`
+`;
 
 const CheckBox = styled.input`
   width: 20px;
   height: 20px;
-
-`
+`;
 
 const AddCard = styled.button`
   width: 300px;
@@ -150,8 +159,8 @@ const AddCard = styled.button`
   font-size: 16px;
   border-radius: 15px;
   cursor: pointer;
-  border: 2px solid  #75c113;
-  color:  #75c113;
+  border: 2px solid #75c113;
+  color: #75c113;
   transition: background-color 1 ease;
   &:hover {
     background-color: #75c113;
@@ -236,7 +245,4 @@ const StyledQuestionDiv = styled.div`
   font-family: "Montserrat", sans-serif;
 `;
 
-const ButtonDiv = styled.div`
-
-
-`
+const ButtonDiv = styled.div``;
