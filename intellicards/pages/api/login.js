@@ -33,12 +33,12 @@ export default async function handle(req, res) {
 
         res.status(200).json({ success: true, data: user });
     } else if (method === "PUT") {
-        const { _id, email, name, surname, password } = req.body;
+        const { _id, email, name, surname, password,points } = req.body;
 
         try {
             const updatedUser = await User.findOneAndUpdate(
                 { _id },
-                { email, name, surname, password },
+                { email, name, surname, password ,points},
                 { new: true }
             );
 

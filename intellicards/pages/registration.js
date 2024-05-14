@@ -38,6 +38,7 @@ const RegisterPage = ({ toggleDarkMode, categories, subcategories }) => {
         surname: surname,
         email: email,
         password: password,
+        points: 0,
       });
       login(newUser.data);
       console.log(newUser);
@@ -47,7 +48,7 @@ const RegisterPage = ({ toggleDarkMode, categories, subcategories }) => {
     }
   }
 
-   const goToLogin = () => {
+  const goToLogin = () => {
     router.push("/login");
   };
 
@@ -60,18 +61,42 @@ const RegisterPage = ({ toggleDarkMode, categories, subcategories }) => {
           <FirstHalf>
             <Text>Це ваш перший візит?</Text>
             <InputWrapper>
-              <MyInput text={"Електронна пошта"} type={"email"} value={email} setValue={setEmail} theme="auth" required />
+              <MyInput
+                text={"Електронна пошта"}
+                type={"email"}
+                value={email}
+                setValue={setEmail}
+                theme="auth"
+                required
+              />
             </InputWrapper>
             <NameWrap>
-              <MyInput text={"Ім'я"} type={"text"} value={name} setValue={setName} theme="auth" />
-              <MyInput text={"Прізвище"} type={"text"} value={surname} setValue={setSurname} theme="auth" />
+              <MyInput
+                text={"Ім'я"}
+                type={"text"}
+                value={name}
+                setValue={setName}
+                theme="auth"
+              />
+              <MyInput
+                text={"Прізвище"}
+                type={"text"}
+                value={surname}
+                setValue={setSurname}
+                theme="auth"
+              />
             </NameWrap>
             <InputWrapper>
-              <MyInput text={"Пароль"} type={"password"} value={password} setValue={setPassword} theme="auth" />
+              <MyInput
+                text={"Пароль"}
+                type={"password"}
+                value={password}
+                setValue={setPassword}
+                theme="auth"
+              />
             </InputWrapper>
             <Wrapper>
               <LoginButton onClick={registerUser}>ЗАРЕЄСТРУВАТИСЬ</LoginButton>
-             
             </Wrapper>
           </FirstHalf>
           <SecondHalf>
@@ -96,9 +121,7 @@ const InputWrapper = styled.div`
   width: 100%;
 `;
 
-const Wrapper = styled.div`
-
-`;
+const Wrapper = styled.div``;
 
 const Page = styled.div`
   display: flex;
@@ -140,7 +163,6 @@ const SecondHalf = styled.div`
 
   @media only screen and (max-width: 600px) {
     padding: 20px;
-    
   }
 `;
 
