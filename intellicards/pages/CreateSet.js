@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import { createCardSet } from "./api/cardSetController";
 import { useAuth } from "@/Contexts/AccountContext";
+import {createCard} from "./api/cardController";
 
 export default function CreateSet() {
   const [name, setName] = useState("");
@@ -24,9 +25,7 @@ export default function CreateSet() {
           answer: card.answer,
           image: "",
         });
-        newCardsId.push(newCard.data.data._id);
         console.log(newCard);
-        console.log(newCardsId);
       }
     } catch (error) {
       console.error("Error during adding cards", error);
@@ -124,7 +123,6 @@ export default function CreateSet() {
       </CheckBoxDiv>
 
       <AddSet onClick={handleCreateSet}>Створити набір</AddSet>
-      {/* <AddSet onClick={addCards}>Створити набір</AddSet> */}
     </Center>
   );
 }

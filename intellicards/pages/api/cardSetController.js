@@ -2,7 +2,7 @@ import { CardSet } from "@/models/CardSet";
 import { mongooseConnect } from "@/lib/mongoose";
 
 // Створення нового набору карточок
-export const createCardSet = async (req, res) => {
+export async function createCardSet(req, res) {
     try {
         await mongooseConnect();
         const { name, category, userId, rating, isPublic } = req.body;
@@ -22,7 +22,7 @@ export const createCardSet = async (req, res) => {
 };
 
 // Отримання набору карточок за ідентифікатором
-export const getCardSet = async (req, res) => {
+export async function getCardSet(req, res) {
     try {
         await mongooseConnect();
         const cardSet = await CardSet.findById(req.params.id);
@@ -37,7 +37,7 @@ export const getCardSet = async (req, res) => {
 };
 
 // Оновлення набору карточок за ідентифікатором
-export const updateCardSet = async (req, res) => {
+export async function updateCardSet(req, res) {
     try {
         await mongooseConnect();
         const { name, category, rating, isPublic } = req.body;
@@ -57,7 +57,7 @@ export const updateCardSet = async (req, res) => {
 };
 
 // Видалення набору карточок за ідентифікатором
-export const deleteCardSet = async (req, res) => {
+export async function deleteCardSet(req, res) {
     try {
         await mongooseConnect();
         const cardSet = await CardSet.findByIdAndDelete(req.params.id);
