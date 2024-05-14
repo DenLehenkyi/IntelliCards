@@ -1,4 +1,4 @@
-import { Card } from "@/models/Card";
+import { CardSet } from "@/models/CardSet";
 import { mongooseConnect } from "@/lib/mongoose";
 
 export default async function handle(req, res) {
@@ -7,14 +7,18 @@ export default async function handle(req, res) {
   await mongooseConnect();
 
   if (method === "POST") {
-    const { question, answer, image } = req.body;
+    const { name, category, cards, userId, rating, IsPublic } = req.body;
 
     try {
-      const newCard = await Card.create({
-        question,
-        answer,
-        image,
+      const newCard = await CardSet.create({
+        name,
+        category,
+        cards,
+        userId,
+        rating,
+        IsPublic,
       });
+
       res.status(201).json({ success: true, data: newCard });
     } catch (error) {
       res.status(500).json({ success: false, error: error.message });
@@ -22,7 +26,7 @@ export default async function handle(req, res) {
   }
   if (method === "GET") {
     try {
-      const cards = await Card.find();
+      const cards = await CardSet.find();
       res.status(200).json({ success: true, data: cards });
     } catch (error) {
       res.status(500).json({ success: false, error: error.message });
@@ -31,24 +35,24 @@ export default async function handle(req, res) {
     res.status(405).json({ success: false, error: "Method Not Allowed" });
   }
   if (method === "PUT") {
-    const { cardId } = req.body;
+    const { cardSetId } = req.body;
 
     try {
-      const updatedCard = await Card.findOneAndUpdate(
+      const updatedCardSet = await CardSet.findOneAndUpdate(
         { cardId },
-        { question, answer, image },
+        { name, category, cards, userId, rating, IsPublic },
         { new: true }
       );
 
-      if (!updatedCard) {
+      if (!updatedCardSet) {
         return res
           .status(404)
-          .json({ success: false, message: "Card not found" });
+          .json({ success: false, message: "CardSet not found" });
       }
 
-      res.status(200).json({ success: true, data: updatedCard });
+      res.status(200).json({ success: true, data: updatedCardSet });
     } catch (error) {
-      console.error("Error updating card data:", error);
+      console.error("Error updating CardSet data:", error);
       res.status(500).json({ success: false, message: "Server error" });
     }
   } else {
@@ -57,22 +61,22 @@ export default async function handle(req, res) {
       message: "Method not supported",
     });
     if (method === "DELETE") {
-      const { cardId } = req.body;
+      const { CardSetId } = req.body;
 
       try {
-        const deletedCard = await Card.findByIdAndDelete(cardId);
+        const deletedCardSet = await CardSet.findByIdAndDelete(CardSetId);
 
-        if (!deletedCard) {
+        if (!deletedCardSet) {
           return res
             .status(404)
-            .json({ success: false, message: "Card not found" });
-        } 
+            .json({ success: false, message: "CardSet not found" });
+        }
 
         res
           .status(200)
-          .json({ success: true, message: "Card deleted successfully" });
+          .json({ success: true, message: "CardSet deleted successfully" });
       } catch (error) {
-        console.error("Error deleting card:", error);
+        console.error("Error deleting CardSet:", error);
         res.status(500).json({ success: false, message: "Server error" });
       }
     } else {

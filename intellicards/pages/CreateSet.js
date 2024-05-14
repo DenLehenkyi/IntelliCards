@@ -37,7 +37,8 @@ export default function CreateSet() {
   const handleCreateSet = async () => {
     try {
       const ispublic = document.getElementById("checkboxId").checked;
-      await createCardSet({ name, category,userId, rating: 0, isPublic: ispublic, });
+      // await createCardSet({ name, category,userId, rating: 0, isPublic: ispublic, });
+      
       setName("");
       setCategory("");
       // setCards([{ question: "", answer: "" }]);
