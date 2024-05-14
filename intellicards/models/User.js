@@ -5,6 +5,7 @@ const userSchema = new Schema({
   surname: String,
   email: String,
   password: String,
+  points: decimal,
 });
 
 let User;
