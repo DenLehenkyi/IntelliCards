@@ -6,11 +6,14 @@ import Navigation from "@/components/Navigation";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
+import { createCardSet } from "./api/cardSetController";
+import { useAuth } from "@/Contexts/AccountContext";
 
 export default function CreateSet() {
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
   const [cards, setCards] = useState([{ question: "", answer: "" }]);
+  const {userId} = useAuth();
 
   async function addCards() {
     try {
@@ -26,6 +29,21 @@ export default function CreateSet() {
       console.error("Error during adding cards", error);
     }
   }
+
+  const handleCreateSet = async () => {
+    try {
+      const ispublic = document.getElementById("checkboxId").checked;
+      await createCardSet({ name, category,userId, rating: 0, isPublic: ispublic, });
+      setName("");
+      setCategory("");
+      // setCards([{ question: "", answer: "" }]);
+  
+  
+    } catch (error) {
+      console.error("Error creating card set", error);
+     
+    }
+  };
   
 
   const handleAddCard = () => {
@@ -95,7 +113,7 @@ export default function CreateSet() {
       <label htmlFor="checkboxId">Зробити публічним</label>
       </CheckBoxDiv>
 
-      <AddSet onClick={addCards}>Створити набір</AddSet>
+      <AddSet onClick={handleCreateSet}>Створити набір</AddSet>
     </Center>
   );
 }
