@@ -3,7 +3,17 @@ import Header from "@/components/Header"
 import styled from "styled-components"
 import { useState, useEffect } from "react";
 import {cardSetsData, cardsData} from "@/components/data"
-import Navigation from "@/components/Navigation";
+// import Navigation from "@/components/Navigation";
+
+import { Swiper, SwiperSlide } from 'swiper/react';
+
+import 'swiper/css';
+import 'swiper/css/effect-coverflow';
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
+
+import { EffectCoverflow, Pagination, Navigation } from 'swiper/modules';
+
 
 export default function StudyPage({_id}){
     console.log(_id)
@@ -21,11 +31,38 @@ export default function StudyPage({_id}){
     return(
         <Center>
             <Header />
-            <Navigation page={set[0].name} />
+            {/* <Navigation page={set[0].name} /> */}
             <Wrapper>
-                <MainCard>
-                    <Card></Card>
-                </MainCard>
+              <Swiper 
+              effect={'coverflow'}
+              grabCursor={true}
+              centeredSlides={true}
+              loop={true}
+              slidesPerView={'auto'}
+              coverflowEffect={{
+                rotate: 0,
+                stretch: 0,
+                depth: 100,
+                modifier: 2.5,
+              }}
+              pagination={{ el: '.swiper-pagination', clickable: true }}
+              navigation={{
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+                clickable: true,
+              }}
+              modules={[EffectCoverflow, Pagination, Navigation]}
+              className="swiper_container">
+                <SwiperSlide>
+                <Card></Card>
+
+                </SwiperSlide>
+                <SwiperSlide>
+                <Card></Card>
+
+                </SwiperSlide>
+
+              </Swiper>
 
 
             </Wrapper>
@@ -50,6 +87,7 @@ const Wrapper = styled.div`
   height: 619px;
   background: #F3F3F3;
   margin-top: 10px;
+  display: flex;
 
 `
 
@@ -63,5 +101,6 @@ const MainCard = styled.div`
  display: flex;
  align-items: center;
  justify-content: center;
+ width: 100%;
 
 `

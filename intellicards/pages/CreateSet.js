@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import { createCardSet } from "./api/cardSetController";
 import { useAuth } from "@/Contexts/AccountContext";
+import {createCard} from "./api/cardController";
 
 export default function CreateSet() {
   const [name, setName] = useState("");
@@ -18,12 +19,15 @@ export default function CreateSet() {
   async function addCards() {
     try {
       for (const card of cards) {
-        const newCard = await axios.post("/api/newCard", {
-          question: card.question,
-          answer: card.answer,
-          image: ""
+        // Викликаємо createCard() для кожної картки
+        await createCard({
+          method: "POST", // Оскільки ми використовуємо POST-запит
+          body: {
+            question: card.question,
+            answer: card.answer,
+            image: "" // Якщо ви плануєте додати зображення, замініть пустий рядок на URL або шлях до зображення
+          }
         });
-        console.log(newCard);
       }
     } catch (error) {
       console.error("Error during adding cards", error);
@@ -113,7 +117,7 @@ export default function CreateSet() {
       <label htmlFor="checkboxId">Зробити публічним</label>
       </CheckBoxDiv>
 
-      <AddSet onClick={handleCreateSet}>Створити набір</AddSet>
+      <AddSet onClick={addCards}>Створити набір</AddSet>
     </Center>
   );
 }
