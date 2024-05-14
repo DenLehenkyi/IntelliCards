@@ -5,11 +5,28 @@ import Header from "@/components/Header";
 import Navigation from "@/components/Navigation";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import axios from "axios";
 
 export default function CreateSet() {
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
   const [cards, setCards] = useState([{ question: "", answer: "" }]);
+
+  async function addCards() {
+    try {
+      for (const card of cards) {
+        const newCard = await axios.post("/api/newCard", {
+          question: card.question,
+          answer: card.answer,
+          image: ""
+        });
+        console.log(newCard);
+      }
+    } catch (error) {
+      console.error("Error during adding cards", error);
+    }
+  }
+  
 
   const handleAddCard = () => {
     setCards([...cards, { question: "", answer: "" }]);
@@ -78,7 +95,7 @@ export default function CreateSet() {
       <label htmlFor="checkboxId">Зробити публічним</label>
       </CheckBoxDiv>
 
-      <AddSet>Створити набір</AddSet>
+      <AddSet onClick={addCards}>Створити набір</AddSet>
     </Center>
   );
 }

@@ -7,6 +7,12 @@ const cardSchema = new Schema({
     image: String,
 });
 
-const Card = model("Card", cardSchema);
+let Card;
 
-export { Card };
+try {
+    Card = model("Card");
+} catch (error) {
+    Card = model("Card", cardSchema);
+}
+
+export { Card as Card };
