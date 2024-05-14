@@ -6,7 +6,7 @@ const cardSetSchema = new Schema({
     cardSet: [{ type: Schema.Types.ObjectId, ref: "Card" }],
     userId: { type: Schema.Types.ObjectId, ref: "User" },
     rating: Number,
-    public: { type: Boolean, default: true },
+    IsPublic: { type: Boolean, default: true },
 });
 
 const CardSet = model("CardSet", cardSetSchema);
