@@ -2,6 +2,7 @@ import styled from "styled-components"
 import CardBox from "./CardsBox"
 import { Pagination } from "@mui/material"
 import { useEffect, useState } from "react";
+import Center from "../Center";
 
 export default function CardSetsGrid({allCardSets, category, users}){
     const [cardSets, setCardSets] = useState(allCardSets);
@@ -29,7 +30,8 @@ export default function CardSetsGrid({allCardSets, category, users}){
     };
 
     return(
-        <SetsDiv>
+        <Center>
+                    <SetsDiv>
             <StyledP>Набори карточок</StyledP>
             <Grid>
                 {currentCardSets.map(set => (
@@ -40,12 +42,15 @@ export default function CardSetsGrid({allCardSets, category, users}){
                 <Pagination count={totalPages} page={currentPage} variant="outlined" color="primary" onChange={(event, page) => handlePageChange(page)} />
             </PaginationDiv>
         </SetsDiv>
+
+        </Center>
+
     );
 }
 
 const SetsDiv = styled.div`
    margin-top: 20px;
-   width: 73%;
+   width: 98%;
    margin-left:16px;
    height: auto;
    background: #F3F3F3;
@@ -63,7 +68,7 @@ const StyledP = styled.p`
 
 const Grid = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 21px;
 `
 

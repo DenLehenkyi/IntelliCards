@@ -2,8 +2,6 @@ import Center from "@/components/Center";
 import Header from "@/components/Header";
 import styled from "styled-components";
 import Navigation from "@/components/Navigation";
-import {cardSetsData, cardsData} from "@/components/data"
-import CardSetsGrid from "@/components/Card/CardSetsGrid";
 import { CardSet } from "@/models/CardSet";
 import { User } from "@/models/User";
 import { Card } from "@/models/Card";
@@ -20,12 +18,15 @@ export default function MySets(users, cardSets) {
             <Button>Створені мною</Button>
             <Button>Прогрес вивчення</Button>
           </Menu>
+          <MySetsDiv>
+        {/* <CardSetsGrid allCardSets={cardSets} users={users}></CardSetsGrid> */}
+        </MySetsDiv>
+
+
 
         </Wrapper>
 
-        <MySetsDiv>
-        {/* <CardSetsGrid allCardSets={cardSets}></CardSetsGrid> */}
-        </MySetsDiv>
+
       
       </Center>
     </>
@@ -37,13 +38,24 @@ const Wrapper = styled.div`
 `
 
 
-const Menu = styled.div`
+const Menu = styled.div` 
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  gap: 20px;
+  margin-top: 35px;
 `
 const Button = styled.button`
+  background-color: #C5E898;
+  border: none;
+  font-family: 'Montserrat', sans-serif;
+  border-radius: 20px;
+  font-size: 16px;
+  width: 200px;
+  height: 40px;
+  font-weight: 600;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   
 `
 const MySetsDiv = styled.div`

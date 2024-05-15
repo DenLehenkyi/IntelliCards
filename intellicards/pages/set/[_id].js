@@ -13,7 +13,7 @@ import { User } from "@/models/User";
 export default function SetPage({ _id, cardSets, allCards, users}) {
   const [cards, setCards] = useState([]);
   const set = cardSets.filter((set) => set._id == _id);
-  console.log(set);
+  console.log(users);
   useEffect(() => {
     if (set) {
       const filteredCards = allCards.filter(
@@ -33,13 +33,11 @@ export default function SetPage({ _id, cardSets, allCards, users}) {
       <Navigation page={set[0].name} />
       <Container>
         <ButtonAndBox>
-          <CardBox card={set[0]} />
+          <CardBox card={set[0]} users={users}/>
           <StyledLink href={"/set/study/" + _id}>
              <Button>Перейти до вивчення</Button>
           </StyledLink>
-
         </ButtonAndBox>
-
         <CardsInSetGrid cards={cards} users={users}/>
       </Container>
     </Center>

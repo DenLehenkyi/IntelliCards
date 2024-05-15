@@ -33,7 +33,7 @@ export default function CardBox({card, users}) {
         <Rating name="half-rating-read" defaultValue={card.rating} precision={0.5} readOnly />
         <OwnerDiv>
           <OwnerSvg />
-          {/* <OwnerName>{owner.name} {owner.surname}</OwnerName> */}
+          <OwnerName>{owner ? `${owner.name} ${owner.surname}` : ''}</OwnerName>
         </OwnerDiv>
 
       </Container>
