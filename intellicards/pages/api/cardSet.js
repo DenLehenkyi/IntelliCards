@@ -49,7 +49,7 @@ export default async function handle(req, res) {
 
     try {
       const updatedCardSet = await CardSet.findOneAndUpdate(
-        { cardId },
+        { cardSetId },
         { name, category, cards, userId, rating, IsPublic },
         { new: true }
       );

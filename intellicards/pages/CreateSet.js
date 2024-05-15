@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Center from "@/components/Center";
 import Header from "@/components/Header";
@@ -7,13 +7,21 @@ import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import { useAuth } from "@/Contexts/AccountContext";
-
+import { userAgent } from "next/server";
 
 export default function CreateSet() {
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
   const [cards, setCards] = useState([{ question: "", answer: "" }]);
-  const { userId, user } = useAuth();
+  const [userId, setUserId] = useState(null);
+
+  const { user } = useAuth();
+  useEffect(() => {
+    if (user) {
+      setUserId(user.data._id);
+    }
+  }, [user]);
+
   const newCardsId = [];
 
   async function addCards() {
