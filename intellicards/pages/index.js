@@ -13,7 +13,7 @@ import { User } from "@/models/User";
 
 export default function Home({ cardSets, users }) {
   const [selectedCategory, setSelectedCategory] = useState(""); 
-
+  console.log(cardSets);
   const handleCategoryClick = (category) => {
     setSelectedCategory(category);
   };

@@ -32,6 +32,7 @@ export default function CreateSet() {
           answer: card.answer,
           image: "",
         });
+        newCardsId.push(newCard.data.data._id);
         console.log(newCard);
       }
     } catch (error) {
@@ -42,21 +43,22 @@ export default function CreateSet() {
   const handleCreateSet = async () => {
     await addCards();
 
-    console.log(newCardsId);
+    console.log(newCardsId.length);
     try {
       const ispublic = document.getElementById("checkboxId").checked;
       const newCardSet = await axios.post("/api/cardSet", {
         name,
         category,
         cards: newCardsId,
+        countCards: newCardsId.length,
         userId,
         rating: 0,
-        IsPublic: ispublic,
+        IsPublic: ispublic, 
       });
       console.log(newCardSet);
       setName("");
       setCategory("");
-      // setCards([{ question: "", answer: "" }]);
+      setCards([{ question: "", answer: "" }]);
     } catch (error) {
       console.error("Error creating card set", error);
     }
