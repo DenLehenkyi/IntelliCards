@@ -67,8 +67,9 @@ export default function Home({ cardSets, users }) {
             <Button>Топ користувачів</Button>
           </StyledLink>
         </CategoriesAndButton>
-
-        <CardSetsGrid allCardSets={cardSets} category={selectedCategory} users={users}/>
+        <CardSets>
+           <CardSetsGrid allCardSets={cardSets} category={selectedCategory} users={users}/>
+        </CardSets>
       </CategoriesAndGridDiv>
     </Center>
   );
@@ -88,6 +89,11 @@ export async function getServerSideProps(context) {
     },
   };
 }
+
+const CardSets = styled.div`
+  width: 730px;
+ 
+`
 
 const CategoriesAndGridDiv = styled.div`
   display: flex;
