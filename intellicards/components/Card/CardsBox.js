@@ -11,7 +11,7 @@ export default function CardBox({ card, users }) {
     if (users && card) {
       console.log(users);
       const foundOwner = users.find((user) => user._id === card.userId);
-      
+
       if (foundOwner) {
         setOwner(foundOwner);
       }

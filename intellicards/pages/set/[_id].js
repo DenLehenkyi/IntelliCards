@@ -10,7 +10,7 @@ import { Card } from "@/models/Card";
 import { CardSet } from "@/models/CardSet";
 import { User } from "@/models/User";
 
-export default function SetPage({ _id, cardSet, users}) {
+export default function SetPage({ _id, cardSet, users }) {
   const [cards, setCards] = useState([]);
   const set = cardSet;
   useEffect(() => {
@@ -19,9 +19,7 @@ export default function SetPage({ _id, cardSet, users}) {
     }
   }, [set._id]);
 
-  console.log(set.name)
-
-  
+  console.log(set.name);
 
   return (
     <Center>
@@ -29,12 +27,15 @@ export default function SetPage({ _id, cardSet, users}) {
       <Navigation page={set.name} />
       <Container>
         <ButtonAndBox>
-          <CardBox card={set} users={users}/>
+          <CardBox card={set} users={users} />
           <StyledLink href={"/set/study/" + _id}>
-             <Button>Перейти до вивчення</Button>
+            <Button>Перейти до вивчення</Button>
+          </StyledLink>
+          <StyledLink href={"/edit/" + _id}>
+            <Button>Редагувати набір</Button>
           </StyledLink>
         </ButtonAndBox>
-        <CardsInSetGrid cards={cards} users={users}/>
+        <CardsInSetGrid cards={cards} users={users} />
       </Container>
     </Center>
   );
@@ -42,7 +43,7 @@ export default function SetPage({ _id, cardSet, users}) {
 
 export async function getServerSideProps(context) {
   const { _id } = context.query;
-  const cardSet = await CardSet.findById(_id).populate('cards');
+  const cardSet = await CardSet.findById(_id).populate("cards");
   const allCards = await Card.find({});
   const users = await User.find({});
 
@@ -52,7 +53,6 @@ export async function getServerSideProps(context) {
       cardSet: JSON.parse(JSON.stringify(cardSet)),
       allCards: JSON.parse(JSON.stringify(allCards)),
       users: JSON.parse(JSON.stringify(users)),
-
     },
   };
 }
@@ -80,6 +80,6 @@ const ButtonAndBox = styled.div`
   flex-direction: column;
 `;
 const StyledLink = styled(Link)`
-   text-decoration: none;
-   color: inherit;
-`
+  text-decoration: none;
+  color: inherit;
+`;

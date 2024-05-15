@@ -58,7 +58,7 @@ export default function CreateSet() {
       console.log(newCardSet);
       setName("");
       setCategory("");
-      // setCards([{ question: "", answer: "" }]);
+      setCards([{ question: "", answer: "" }]);
     } catch (error) {
       console.error("Error creating card set", error);
     }

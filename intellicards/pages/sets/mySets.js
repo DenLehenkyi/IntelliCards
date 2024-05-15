@@ -2,12 +2,16 @@ import Center from "@/components/Center";
 import Header from "@/components/Header";
 import styled from "styled-components";
 import Navigation from "@/components/Navigation";
-import { CardSet } from "@/models/CardSet";
+
 import { useAuth } from "@/Contexts/AccountContext";
 import { useEffect, useState } from "react";
 import { mongooseConnect } from "@/lib/mongoose";
 import { Card } from "@/models/Card";
-export default function MySets(allCardSets, card) {
+import { CardSet } from "@/models/CardSet";
+import CardSetsGrid from "@/components/Card/CardSetsGrid";
+import { User } from "@/models/User";
+
+export default function MySets({ cardSets, users }) {
   const { user } = useAuth();
   const [userId, setUserId] = useState(null);
   const [myCardSets, setMyCardSets] = useState([]);
@@ -17,14 +21,15 @@ export default function MySets(allCardSets, card) {
     }
   }, [user, userId]);
 
+  useEffect(() => {
+    if (userId) {
+      const filteredCardSets = cardSets.filter(
+        (cardSet) => cardSet.userId === userId
+      );
+      setMyCardSets(filteredCardSets);
+    }
+  }, [userId, cardSets]);
 
-  // useEffect(() => {
-  //   if (userId) {
-  //     const filteredCardSets = allCardSets.filter((cardSet) => cardSet.userId === userId);
-  //     setMyCardSets(filteredCardSets);
-  //   }
-  // }, [userId, allCardSets]);
-   console.log(allCardSets)
   return (
     <>
       <Header />
@@ -36,22 +41,30 @@ export default function MySets(allCardSets, card) {
             <Button>Прогрес вивчення</Button>
           </Menu>
           <MySetsDiv>
-            {/* <CardSetsGrid allCardSets={cardSets} category={selectedCategory} users={users}/> */}
+            <CardSetsGrid
+              allCardSets={myCardSets}
+              category={""}
+              users={users}
+            />
           </MySetsDiv>
         </Wrapper>
       </Center>
     </>
   );
 }
+
 export async function getServerSideProps(context) {
   await mongooseConnect();
-  const allCardSets = await CardSet.find({});
-  const allCards = await Card.find({});
+
+  const cardSets = await CardSet.find({}).populate("cards");
+  const users = await User.find({});
 
   return {
     props: {
-      cardSets: JSON.parse(JSON.stringify(allCardSets)),
-      allCards: JSON.parse(JSON.stringify(allCards)),
+      cardSets: JSON.parse(JSON.stringify(cardSets)),
+      users: JSON.parse(JSON.stringify(users)),
+
+      search: context.query?.search || "",
     },
   };
 }
@@ -81,7 +94,7 @@ const Button = styled.button`
 `;
 const MySetsDiv = styled.div`
   width: 730px;
-  background-color: #f3f3f3;
+
   border-radius: 15px;
   margin-left: 25px;
   margin-top: 30px;
