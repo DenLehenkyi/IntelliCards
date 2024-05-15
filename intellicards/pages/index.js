@@ -8,6 +8,7 @@ import { useState } from "react";
 import styled from "styled-components";
 import { mongooseConnect } from "@/lib/mongoose";
 import { CardSet } from "@/models/CardSet";
+import { User } from "@/models/User";
 
 // const cardSetsData = [
 //   {
@@ -45,7 +46,7 @@ import { CardSet } from "@/models/CardSet";
 
 // ];
 
-export default function Home({ cardSets }) {
+export default function Home({ cardSets, users }) {
   const [selectedCategory, setSelectedCategory] = useState(""); // Initialize with an empty string
 
   const handleCategoryClick = (category) => {
@@ -67,7 +68,7 @@ export default function Home({ cardSets }) {
           </StyledLink>
         </CategoriesAndButton>
 
-        <CardSetsGrid allCardSets={cardSets} category={selectedCategory} />
+        <CardSetsGrid allCardSets={cardSets} category={selectedCategory} users={users}/>
       </CategoriesAndGridDiv>
     </Center>
   );
@@ -75,13 +76,14 @@ export default function Home({ cardSets }) {
 
 export async function getServerSideProps(context) {
   await mongooseConnect();
-
+  
   const cardSets = await CardSet.find({});
+  const users = await User.find({});
 
   return {
     props: {
       cardSets: JSON.parse(JSON.stringify(cardSets)),
-
+      users: JSON.parse(JSON.stringify(users)),
       search: context.query?.search || "",
     },
   };

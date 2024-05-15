@@ -6,93 +6,26 @@ import Navigation from "@/components/Navigation";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Link from "next/link";
+import { Card } from "@/models/Card";
+import { CardSet } from "@/models/CardSet";
+import { User } from "@/models/User";
 
-const cardSetsData = [
-  {
-    _id: 1,
-    name: "Англійська мова",
-    category: "Англійська мова",
-    cardCount: 20,
-    owner: "Користувач 1",
-    rating: 3.5,
-  },
-  {
-    _id: 2,
-    name: "Англійська мова",
-    category: "Українська мова",
-    cardCount: 15,
-    owner: "Користувач 2",
-    rating: 4.5,
-  },
-  {
-    _id: 3,
-    name: "Англійська мова",
-    category: "Історія",
-    cardCount: 15,
-    owner: "Користувач 3",
-    rating: 4.0,
-  },
-  {
-    _id: 4,
-    name: "Набір 4",
-    category: "Англійська мова",
-    cardCount: 15,
-    owner: "Користувач 4",
-    rating: 4.0,
-  },
-];
-
-const cardsData = [
-  {
-    _id: 1,
-    setId: 1,
-    question: "Яка столиця України?",
-    answer: "Київ",
-  },
-  {
-    _id: 2,
-    setId: 1,
-    question: "Який найбільший океан?",
-    answer: "Тихий",
-  },
-  {
-    _id: 3,
-    setId: 2,
-    question: "Скільки планет у Сонячній системі?",
-    answer: "8",
-  },
-  {
-    _id: 4,
-    setId: 2,
-    question: "Яка найбільша планета у Сонячній системі?",
-    answer: "Юпітер",
-  },
-  {
-    _id: 5,
-    setId: 3,
-    question: "Хто написав 'Майстер і Маргарита'?",
-    answer: "Михайло Булгаков",
-  },
-  {
-    _id: 6,
-    setId: 3,
-    question: "Коли почалася Перша світова війна?",
-    answer: "1914",
-  },
-];
-
-export default function SetPage({ _id }) {
+export default function SetPage({ _id, cardSets, allCards, users}) {
   const [cards, setCards] = useState([]);
-  const set = cardSetsData.filter((set) => set._id == _id);
-  console.log(cardsData[0].setId);
+  const set = cardSets.filter((set) => set._id == _id);
+  console.log(set);
   useEffect(() => {
     if (set) {
-      const filteredCards = cardsData.filter(
-        (card) => card.setId === set[0]._id
+      const filteredCards = allCards.filter(
+        (card) => card.setId === set._id
       );
       setCards(filteredCards);
     }
-  }, [set[0]._id]);
+  }, [set._id]);
+
+  console.log(set[0].name)
+
+  
 
   return (
     <Center>
@@ -103,12 +36,11 @@ export default function SetPage({ _id }) {
           <CardBox card={set[0]} />
           <StyledLink href={"/set/study/" + _id}>
              <Button>Перейти до вивчення</Button>
-
           </StyledLink>
 
         </ButtonAndBox>
 
-        <CardsInSetGrid cards={cards} />
+        <CardsInSetGrid cards={cards} users={users}/>
       </Container>
     </Center>
   );
@@ -116,10 +48,17 @@ export default function SetPage({ _id }) {
 
 export async function getServerSideProps(context) {
   const { _id } = context.query;
+  const cardSets = await CardSet.find({});
+  const allCards = await Card.find({});
+  const users = await User.find({});
 
   return {
     props: {
       _id: _id.toString(),
+      cardSets: JSON.parse(JSON.stringify(cardSets)),
+      allCards: JSON.parse(JSON.stringify(allCards)),
+      users: JSON.parse(JSON.stringify(users)),
+
     },
   };
 }

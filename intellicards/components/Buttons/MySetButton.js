@@ -1,11 +1,19 @@
 import styled from "styled-components";
 import { useRouter } from "next/router";
+import { useAuth } from "@/Contexts/AccountContext";
 
 export default function MySetsButton({ children }) {
   const router = useRouter();
+  const {user} = useAuth();
 
   const handleClick = () => {
-      router.push("/sets/mySets"); 
+    if(user){
+        router.push("/sets/mySets");
+    }
+    else{
+        router.push("/login");
+    }
+ 
   };
 
   return (

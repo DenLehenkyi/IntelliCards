@@ -2,9 +2,24 @@ import styled from "styled-components";
 import Rating from '@mui/material/Rating';
 import OwnerSvg from "../svg/OwnerSvg";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 
-export default function CardBox({card}) {
+export default function CardBox({card, users}) {
+  const [owner, setOwner] = useState();
+
+  useEffect(() => {
+    if (users && card) {
+      const foundOwner = users.find(user => user.id === card.userId);
+      console.log(foundOwner)
+      if (foundOwner) {
+        setOwner(foundOwner);
+      }
+    }
+  }, [card, users]);
+  
+
+
   return(
     <StyledLink href={"/set/" + card._id}>
     <CardDiv>
@@ -13,12 +28,12 @@ export default function CardBox({card}) {
       </NameDiv>
       <Container>
         <NumOfCardsDiv>
-          <NumOfCardsP>{card.cardCount} карточок</NumOfCardsP>
+          <NumOfCardsP>{card.cards.length} карточок</NumOfCardsP>
         </NumOfCardsDiv>
         <Rating name="half-rating-read" defaultValue={card.rating} precision={0.5} readOnly />
         <OwnerDiv>
           <OwnerSvg />
-          <OwnerName>{card.owner}</OwnerName>
+          <OwnerName>{owner.name} {owner.surname}</OwnerName>
         </OwnerDiv>
 
       </Container>

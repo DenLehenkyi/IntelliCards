@@ -3,7 +3,7 @@ import CardBox from "./CardsBox"
 import { Pagination } from "@mui/material"
 import { useEffect, useState } from "react";
 
-export default function CardSetsGrid({allCardSets, category}){
+export default function CardSetsGrid({allCardSets, category, users}){
     const [cardSets, setCardSets] = useState(allCardSets);
 
     useEffect(() => {
@@ -33,7 +33,7 @@ export default function CardSetsGrid({allCardSets, category}){
             <StyledP>Набори карточок</StyledP>
             <Grid>
                 {currentCardSets.map(set => (
-                    <CardBox key={set._id} card={set} />
+                    <CardBox key={set._id} card={set} users={users}/>
                 ))}
             </Grid>
             <PaginationDiv>

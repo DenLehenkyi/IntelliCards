@@ -7,7 +7,7 @@ import MySetsButton from "./Buttons/MySetButton";
 import { useAuth } from "@/Contexts/AccountContext";
 
 export default function Header() {
- 
+
   return (
     <Center>
       <HeaderDiv>
