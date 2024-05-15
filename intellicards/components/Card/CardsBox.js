@@ -11,6 +11,7 @@ export default function CardBox({card, users}) {
   useEffect(() => {
     if (users && card) {
       const foundOwner = users.find(user => user.id === card.userId);
+      console.log(card)
       console.log(foundOwner)
       if (foundOwner) {
         setOwner(foundOwner);
