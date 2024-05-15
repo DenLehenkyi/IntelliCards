@@ -41,11 +41,11 @@ export default async function handle(req, res) {
     res.status(405).json({ success: false, message: "Method not allowed" });
   }
   if (method === "PUT") {
-    const { cardId,question,answer,image } = req.body;
+    const { cardId, question, answer, image } = req.body;
 
     try {
       const updatedCard = await Card.findOneAndUpdate(
-        { cardId },
+        { _id: cardId },
         { question, answer, image },
         { new: true }
       );
