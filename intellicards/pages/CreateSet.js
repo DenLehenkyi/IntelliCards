@@ -6,9 +6,8 @@ import Navigation from "@/components/Navigation";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
-import { createCardSet } from "./api/cardSetController";
 import { useAuth } from "@/Contexts/AccountContext";
-import {createCard} from "./api/cardController";
+
 
 export default function CreateSet() {
   const [name, setName] = useState("");
