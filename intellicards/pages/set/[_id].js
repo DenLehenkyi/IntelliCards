@@ -10,30 +10,26 @@ import { Card } from "@/models/Card";
 import { CardSet } from "@/models/CardSet";
 import { User } from "@/models/User";
 
-export default function SetPage({ _id, cardSets, allCards, users}) {
+export default function SetPage({ _id, cardSet, users}) {
   const [cards, setCards] = useState([]);
-  const set = cardSets.filter((set) => set._id == _id);
-  console.log(users);
+  const set = cardSet;
   useEffect(() => {
     if (set) {
-      const filteredCards = allCards.filter(
-        (card) => card.setId === set._id
-      );
-      setCards(filteredCards);
+      setCards(set.cards);
     }
   }, [set._id]);
 
-  console.log(set[0].name)
+  console.log(set.name)
 
   
 
   return (
     <Center>
       <Header />
-      <Navigation page={set[0].name} />
+      <Navigation page={set.name} />
       <Container>
         <ButtonAndBox>
-          <CardBox card={set[0]} users={users}/>
+          <CardBox card={set} users={users}/>
           <StyledLink href={"/set/study/" + _id}>
              <Button>Перейти до вивчення</Button>
           </StyledLink>
@@ -46,14 +42,14 @@ export default function SetPage({ _id, cardSets, allCards, users}) {
 
 export async function getServerSideProps(context) {
   const { _id } = context.query;
-  const cardSets = await CardSet.find({});
+  const cardSet = await CardSet.findById(_id).populate('cards');
   const allCards = await Card.find({});
   const users = await User.find({});
 
   return {
     props: {
       _id: _id.toString(),
-      cardSets: JSON.parse(JSON.stringify(cardSets)),
+      cardSet: JSON.parse(JSON.stringify(cardSet)),
       allCards: JSON.parse(JSON.stringify(allCards)),
       users: JSON.parse(JSON.stringify(users)),
 

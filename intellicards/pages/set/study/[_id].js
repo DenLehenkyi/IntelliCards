@@ -4,6 +4,7 @@ import styled from "styled-components"
 import { useState, useEffect } from "react";
 import {cardSetsData, cardsData} from "@/components/data"
 // import Navigation from "@/components/Navigation";
+import { CardSet } from "@/models/CardSet";
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 
@@ -15,24 +16,19 @@ import 'swiper/css/navigation';
 import { EffectCoverflow, Pagination, Navigation } from 'swiper/modules';
 
 
-export default function StudyPage({_id}){
-    console.log(_id)
+export default function StudyPage({_id, cardSet}){
+    const set = cardSet;
     const [cards, setCards] = useState([]);
-    const set = cardSetsData.filter((set) => set._id == _id);
     useEffect(() => {
       if (set) {
-        const filteredCards = cardsData.filter(
-          (card) => card.setId === set[0]._id
-        );
-        setCards(filteredCards);
+        setCards(cardSet.cards);
       }
-    }, [set[0]._id]);
+    }, [set._id]);
 
     return(
         <Center>
             <Header />
             {/* <Navigation page={set[0].name} /> */}
-            <Wrapper>
               <Swiper 
               effect={'coverflow'}
               grabCursor={true}
@@ -54,18 +50,28 @@ export default function StudyPage({_id}){
               modules={[EffectCoverflow, Pagination, Navigation]}
               className="swiper_container">
                 <SwiperSlide>
-                <Card></Card>
+                <Card>erg</Card>
 
                 </SwiperSlide>
                 <SwiperSlide>
-                <Card></Card>
+                <Card>dsvds</Card>
 
                 </SwiperSlide>
+
+                <SliderControler className="slider-controler">
+          <SwiperButtonPrev className="swiper-button-prev slider-arrow">
+            <ion-icon name="arrow-back-outline"></ion-icon>
+          </SwiperButtonPrev>
+          <SwiperButtonNext className="swiper-button-next slider-arrow">
+            <ion-icon name="arrow-forward-outline"></ion-icon>
+          </SwiperButtonNext>
+          <SwiperPagination className="swiper-pagination"></SwiperPagination>
+        </SliderControler>
+
 
               </Swiper>
 
 
-            </Wrapper>
 
         </Center>
 
@@ -75,10 +81,12 @@ export default function StudyPage({_id}){
 
 export async function getServerSideProps(context) {
     const { _id } = context.query;
-  
+    const cardSet = await CardSet.findById(_id).populate('cards');
+
     return {
       props: {
         _id: JSON.parse(JSON.stringify(_id)),
+        cardSet: JSON.parse(JSON.stringify(cardSet)),
       },
     };
   }
@@ -90,6 +98,8 @@ const Wrapper = styled.div`
   display: flex;
 
 `
+
+
 
 const Card = styled.div`
 width: 700px;
