@@ -76,12 +76,12 @@ export default async function handle(req, res) {
         if (!deletedCard) {
           return res
             .status(404)
-            .json({ success: false, message: "Card not found" });
+            .json({ success: false, message: "progressId not found" });
         }
 
         res
           .status(200)
-          .json({ success: true, message: "Card deleted successfully" });
+          .json({ success: true, message: "progressId deleted successfully" });
       } catch (error) {
         console.error("Error deleting card:", error);
         res.status(500).json({ success: false, message: "Server error" });
