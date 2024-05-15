@@ -6,6 +6,7 @@ const cardSetSchema = new Schema({
     cards: [{ type: Schema.Types.ObjectId, ref: "Card" }],
     userId: { type: Schema.Types.ObjectId, ref: "User" },
     rating: Number,
+    countCards: Number,
     IsPublic: { type: Boolean, default: true },
 });
 

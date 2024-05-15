@@ -7,13 +7,15 @@ export default async function handle(req, res) {
   await mongooseConnect();
 
   if (method === "POST") {
-    const { name, category, cards, userId, rating, IsPublic } = req.body;
+    const { name, category, cards, countCards, userId, rating, IsPublic } =
+      req.body;
 
     try {
       const newCard = await CardSet.create({
         name,
         category,
         cards,
+        countCards,
         userId,
         rating,
         IsPublic,
@@ -50,7 +52,7 @@ export default async function handle(req, res) {
     try {
       const updatedCardSet = await CardSet.findOneAndUpdate(
         { cardSetId },
-        { name, category, cards, userId, rating, IsPublic },
+        { name, category, cards, countCards, userId, rating, IsPublic },
         { new: true }
       );
 
