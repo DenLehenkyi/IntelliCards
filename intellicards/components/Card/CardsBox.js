@@ -56,6 +56,7 @@ const CardDiv = styled.div`
   background: rgba(120, 193, 243, 0.19);
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 10px;
+  padding:10px;
 `;
 
 const NameDiv = styled.div`
@@ -68,6 +69,10 @@ const Name = styled.p`
   font-size: 20px;
   font-family: "Montserrat", sans-serif;
   font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap; 
+  
 `;
 const Container = styled.div`
   margin-left: 20px;

@@ -6,8 +6,6 @@ import MyInput from "@/components/Login/MyInput";
 import { useRouter } from "next/router";
 import axios from "axios";
 import { useAuth } from "@/Contexts/AccountContext";
-// import LogoWithoutPurple from "@/components/Logo/LogoWithoutPurple";
-
 import Navigation from "@/components/Navigation";
 import Center from "@/components/Center";
 
@@ -18,13 +16,41 @@ const RegisterPage = ({ toggleDarkMode, categories, subcategories }) => {
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
   const { login, isLogin } = useAuth();
 
   async function registerUser() {
-    if (!name || !surname || !email || !password) {
-      console.error("Please fill in all fields.");
+    setEmailError("");
+    setPasswordError("");
+
+    if (!name.trim()) {
+      setEmailError("Please enter your name.");
       return;
     }
+
+    if (!surname.trim()) {
+      setEmailError("Please enter your surname.");
+      return;
+    }
+
+    if (!email.trim()) {
+      setEmailError("Please enter your email.");
+      return;
+    }
+
+    // Regular expression to check if email is Gmail
+    const gmailRegex = /@gmail.com$/i;
+    if (!gmailRegex.test(email)) {
+      setEmailError("Please enter a Gmail address.");
+      return;
+    }
+
+    if (!password.trim()) {
+      setPasswordError("Please enter your password.");
+      return;
+    }
+
     try {
       const checkUser = await axios.get(`/api/register`, {
         email: email,
@@ -69,6 +95,7 @@ const RegisterPage = ({ toggleDarkMode, categories, subcategories }) => {
                 theme="auth"
                 required
               />
+              <ErrorMessage>{emailError}</ErrorMessage>
             </InputWrapper>
             <NameWrap>
               <MyInput
@@ -77,6 +104,7 @@ const RegisterPage = ({ toggleDarkMode, categories, subcategories }) => {
                 value={name}
                 setValue={setName}
                 theme="auth"
+                required
               />
               <MyInput
                 text={"Прізвище"}
@@ -84,6 +112,7 @@ const RegisterPage = ({ toggleDarkMode, categories, subcategories }) => {
                 value={surname}
                 setValue={setSurname}
                 theme="auth"
+                required
               />
             </NameWrap>
             <InputWrapper>
@@ -93,7 +122,9 @@ const RegisterPage = ({ toggleDarkMode, categories, subcategories }) => {
                 value={password}
                 setValue={setPassword}
                 theme="auth"
+                required
               />
+              <ErrorMessage>{passwordError}</ErrorMessage>
             </InputWrapper>
             <Wrapper>
               <LoginButton onClick={registerUser}>ЗАРЕЄСТРУВАТИСЬ</LoginButton>
@@ -178,15 +209,9 @@ const NameWrap = styled.div`
   max-width: 500px;
 `;
 
-// export async function getServerSideProps() {
-//   const categories = await Category.find({});
-//   const subcategories = await SubCategory.find({});
-//   return {
-//     props: {
-//       categories: JSON.parse(JSON.stringify(categories)),
-//       subcategories: JSON.parse(JSON.stringify(subcategories)),
-//     },
-//   };
-// }
+const ErrorMessage = styled.span`
+  margin-top: 5px;
+  color: red;
+`;
 
 export default RegisterPage;

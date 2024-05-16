@@ -8,7 +8,7 @@ export default function CreateSetButton({ children }) {
 
     const handleClick = () => {
         if(user){
-            router.push("/CreateSet"); 
+            router.push("/sets/CreateSet"); 
         }
         else{
             router.push("/login"); 

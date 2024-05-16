@@ -19,8 +19,7 @@ export default async function handle(req, res) {
     } catch (error) {
       res.status(500).json({ success: false, error: error.message });
     }
-  }
-  if (method === "GET") {
+  } else if (method === "GET") {
     const { cardId } = req.query;
 
     try {
@@ -29,7 +28,7 @@ export default async function handle(req, res) {
       if (!foundedCard) {
         return res
           .status(404)
-          .json({ success: false, message: "card not found" });
+          .json({ success: false, message: "Card not found" });
       }
 
       res.status(200).json({ success: true, data: foundedCard });
@@ -37,15 +36,12 @@ export default async function handle(req, res) {
       console.error("Error fetching card:", error);
       res.status(500).json({ success: false, message: "Server error" });
     }
-  } else {
-    res.status(405).json({ success: false, message: "Method not allowed" });
-  }
-  if (method === "PUT") {
-    const { cardId, question, answer, image } = req.body;
+  } else if (method === "PUT") {
+    const { _id, question, answer, image } = req.body;
 
     try {
-      const updatedCard = await Card.findOneAndUpdate(
-        { _id: cardId },
+      const updatedCard = await Card.findByIdAndUpdate(
+        _id,
         { question, answer, image },
         { new: true }
       );
@@ -58,35 +54,29 @@ export default async function handle(req, res) {
 
       res.status(200).json({ success: true, data: updatedCard });
     } catch (error) {
-      console.error("Error updating card data:", error);
+      console.error("Error updating card:", error);
+      res.status(500).json({ success: false, message: "Server error" });
+    }
+  } else if (method === "DELETE") {
+    const { cardId } = req.body;
+
+    try {
+      const deletedCard = await Card.findByIdAndDelete(cardId);
+
+      if (!deletedCard) {
+        return res
+          .status(404)
+          .json({ success: false, message: "Card not found" });
+      }
+
+      res
+        .status(200)
+        .json({ success: true, message: "Card deleted successfully" });
+    } catch (error) {
+      console.error("Error deleting card:", error);
       res.status(500).json({ success: false, message: "Server error" });
     }
   } else {
-    res.status(405).json({
-      success: false,
-      message: "Method not supported",
-    });
-    if (method === "DELETE") {
-      const { cardId } = req.body;
-
-      try {
-        const deletedCard = await Card.findByIdAndDelete(cardId);
-
-        if (!deletedCard) {
-          return res
-            .status(404)
-            .json({ success: false, message: "Card not found" });
-        }
-
-        res
-          .status(200)
-          .json({ success: true, message: "Card deleted successfully" });
-      } catch (error) {
-        console.error("Error deleting card:", error);
-        res.status(500).json({ success: false, message: "Server error" });
-      }
-    } else {
-      res.status(405).json({ success: false, message: "Method not supported" });
-    }
+    res.status(405).json({ success: false, message: "Method not allowed" });
   }
 }

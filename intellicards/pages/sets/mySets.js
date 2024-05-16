@@ -15,6 +15,9 @@ export default function MySets({ cardSets, users }) {
   const { user } = useAuth();
   const [userId, setUserId] = useState(null);
   const [myCardSets, setMyCardSets] = useState([]);
+  const [showMySets, setShowMySets] = useState(true); // Доданий стан для відображення моїх наборів
+  const [isMySetsClicked, setIsMySetsClicked] = useState(false); //
+
   useEffect(() => {
     if (user) {
       setUserId(user.data._id);
@@ -30,6 +33,14 @@ export default function MySets({ cardSets, users }) {
     }
   }, [userId, cardSets]);
 
+  const handleShowMySets = () => {
+    setIsMySetsClicked(true); // Встановлюємо стан showMySets в true при натисканні кнопки
+  };
+
+  const handleShowLearningProgress = () => {
+    setIsMySetsClicked(false); // Встановлюємо стан showMySets в false при натисканні кнопки
+  };
+
   return (
     <>
       <Header />
@@ -37,15 +48,24 @@ export default function MySets({ cardSets, users }) {
       <Center>
         <Wrapper>
           <Menu>
-            <Button>Створені мною</Button>
-            <Button>Прогрес вивчення</Button>
+            <Button onClick={handleShowMySets} isActive={isMySetsClicked}>
+              Створені мною
+            </Button>{" "}
+            <Button
+              onClick={handleShowLearningProgress}
+              isActive={!isMySetsClicked}
+            >
+              Прогрес вивчення
+            </Button>
           </Menu>
           <MySetsDiv>
-            <CardSetsGrid
-              allCardSets={myCardSets}
-              category={""}
-              users={users}
-            />
+            {isMySetsClicked && (
+              <CardSetsGrid
+                allCardSets={myCardSets}
+                category={""}
+                users={users}
+              />
+            )}
           </MySetsDiv>
         </Wrapper>
       </Center>
@@ -75,14 +95,14 @@ const Wrapper = styled.div`
 
 const Menu = styled.div`
   display: flex;
-  align-items: center;
-  justify-content: center;
+
   flex-direction: column;
   gap: 20px;
-  margin-top: 35px;
+  margin-top: 55px;
 `;
 const Button = styled.button`
-  background-color: #c5e898;
+  background-color: ${({ isActive }) => (isActive ? "gray" : "#c5e898")};
+  color: ${({ isActive }) => (isActive ? "white" : "black")};
   border: none;
   font-family: "Montserrat", sans-serif;
   border-radius: 20px;
@@ -91,6 +111,11 @@ const Button = styled.button`
   height: 40px;
   font-weight: 600;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  cursor: pointer;
+  &:hover {
+    background-color: ${({ isActive }) => (isActive ? "green" : "#75c113")};
+    color: ${({ isActive }) => (isActive ? "white" : "black")};
+  }
 `;
 const MySetsDiv = styled.div`
   width: 730px;

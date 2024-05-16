@@ -9,12 +9,13 @@ import Center from "@/components/Center";
 import axios from "axios";
 import { useAuth } from "@/Contexts/AccountContext";
 
-
 const LoginPage = () => {
   const router = useRouter();
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [loginError, setLoginError] = useState(""); // Новий стан для повідомлення про невдалий вхід
 
   const { login, isLogin } = useAuth();
 
@@ -22,32 +23,47 @@ const LoginPage = () => {
     if (isLogin) {
       router.push("/user-profile/user-info");
     }
-  }, [isLogin])
+  }, [isLogin]);
 
+  const validateEmail = (email) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+  };
+  
   const loginUser = async () => {
-    if (!email || !password) {
-      console.error("Please fill in all fields.");
+    setEmailError("");
+    setPasswordError("");
+    setLoginError("");
+    
+    if (!email.trim()) {
+      setEmailError("Будь ласка введіть свою пошту.");
+      return;
+    } else if (!validateEmail(email.trim())) {
+      setEmailError("Будь ласка введіть правильний формат пошти.");
       return;
     }
+  
+    if (!password.trim()) {
+      setPasswordError("Будь ласка введіть свій пароль.");
+      return;
+    }
+  
     try {
-      // Здійснюємо запит до вашого API для перевірки користувача
       const response = await axios.post("/api/login", {
         email: email,
         password: password,
       });
-
+  
       if (response.data.success) {
-        console.log("User logged in successfully.");
         login(response.data);
         router.push({
           pathname: "/user-profile/user-info",
           query: { email: email },
         });
-      } else {
-        console.error("Invalid email or password.");
       }
     } catch (error) {
       console.error("Error during login:", error);
+      setLoginError("Даний акаунт не зареєстрований!");
     }
   };
 
@@ -61,33 +77,48 @@ const LoginPage = () => {
       <Navigation page={"Увійти"} />
       <Page>
         <Container>
-        
-          {!isLogin && 
+          {!isLogin && (
             <>
-          <FirstHalf>
-            <Text>Ви користувач?</Text>
-            <InputWrapper>
-              <MyInput text={"Електронна пошта"} type={"email"} value={email} setValue={setEmail} theme="auth" />
-            </InputWrapper>
-            <InputWrapper>
-              <MyInput text={"Пароль"} type={"password"} value={password} setValue={setPassword} theme="auth" />
-            </InputWrapper>
-            <Wrapper>
-              <LoginButton onClick={loginUser} href={"/"}>
-                УВІЙТИ
-              </LoginButton>
-          
-            </Wrapper>
-          </FirstHalf>
-          <SecondHalf>
-            <Text>Це ваш перший візит?</Text>
-            <Wrapper>
-              <LoginButton onClick={goToRegister}>ЗАРЕЄСТРУВАТИСЬ</LoginButton>
-            </Wrapper>
-          </SecondHalf>
-             </>
-          }
-     
+              <FirstHalf>
+                <Text>Ви користувач?</Text>
+                <InputWrapper>
+                  <MyInput
+                    text={"Електронна пошта"}
+                    type={"email"}
+                    value={email}
+                    setValue={setEmail}
+                    theme="auth"
+                  />
+                  <ErrorMessage>{emailError}</ErrorMessage>
+                </InputWrapper>
+                <InputWrapper>
+                  <MyInput
+                    text={"Пароль"}
+                    type={"password"}
+                    value={password}
+                    setValue={setPassword}
+                    theme="auth"
+                  />
+                  <ErrorMessage>{passwordError}</ErrorMessage>
+                </InputWrapper>
+                <ErrorMessage>{loginError}</ErrorMessage>{" "}
+                {/* Відображення повідомлення про невдалий вхід */}
+                <Wrapper>
+                  <LoginButton onClick={loginUser} href={"/"}>
+                    УВІЙТИ
+                  </LoginButton>
+                </Wrapper>
+              </FirstHalf>
+              <SecondHalf>
+                <Text>Це ваш перший візит?</Text>
+                <Wrapper>
+                  <LoginButton onClick={goToRegister}>
+                    ЗАРЕЄСТРУВАТИСЬ
+                  </LoginButton>
+                </Wrapper>
+              </SecondHalf>
+            </>
+          )}
         </Container>
       </Page>
     </Center>
@@ -104,9 +135,7 @@ const InputWrapper = styled.div`
   width: 100%;
 `;
 
-const Wrapper = styled.div`
-
-`;
+const Wrapper = styled.div``;
 
 const Page = styled.div`
   display: flex;
@@ -149,7 +178,6 @@ const SecondHalf = styled.div`
 
   @media only screen and (max-width: 600px) {
     padding: 20px;
-    
   }
 `;
 
@@ -158,15 +186,9 @@ const Text = styled.div`
   text-align: left;
 `;
 
-// export async function getServerSideProps(context) {
-//   const categories = await Category.find({});
-//   const subcategories = await SubCategory.find({});
-//   return {
-//     props: {
-//       categories: JSON.parse(JSON.stringify(categories)),
-//       subcategories: JSON.parse(JSON.stringify(subcategories)),
-//     },
-//   };
-// }
+const ErrorMessage = styled.span`
+  margin-top: 5px;
+  color: red;
+`;
 
 export default LoginPage;
