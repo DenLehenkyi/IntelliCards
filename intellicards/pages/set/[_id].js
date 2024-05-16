@@ -9,8 +9,11 @@ import Link from "next/link";
 import { Card } from "@/models/Card";
 import { CardSet } from "@/models/CardSet";
 import { User } from "@/models/User";
+import { useAuth } from "@/Contexts/AccountContext";
+import axios from "axios";
 
 export default function SetPage({ _id, cardSet, users }) {
+  const {user} = useAuth();
   const [cards, setCards] = useState([]);
   const set = cardSet;
   useEffect(() => {
@@ -19,7 +22,20 @@ export default function SetPage({ _id, cardSet, users }) {
     }
   }, [set._id]);
 
-  console.log(set.name);
+
+  const handleStartStudy = async () => {
+
+    try {
+      const newProgress = await axios.post("/api/progress", {
+        passedCards: 0,
+        passingPercentage: 0,
+        cardSetsId: _id,
+        userId: user.data._id,
+      });
+    } catch (error) {
+      console.error("Error adding progress", error);
+    }
+  };
 
   return (
     <Center>
@@ -29,7 +45,7 @@ export default function SetPage({ _id, cardSet, users }) {
         <ButtonAndBox>
           <CardBox card={set} users={users} />
           <StyledLink href={"/set/study/" + _id}>
-            <Button>Перейти до вивчення</Button>
+            <Button onClick={() => handleStartStudy()}>Перейти до вивчення</Button>
           </StyledLink>
           <StyledLink href={"/edit/" + _id}>
             <Button>Редагувати набір</Button>

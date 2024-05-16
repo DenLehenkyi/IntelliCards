@@ -3,7 +3,7 @@ import { Schema, model } from "mongoose";
 const progressSchema = new Schema({
     passedCards:Number,
     passingPercentage:Number,  
-    cardSetsId: [{ type: Schema.Types.ObjectId, ref: "CardSet" }],
+    cardSetsId: { type: Schema.Types.ObjectId, ref: "CardSet" },
     userId: { type: Schema.Types.ObjectId, ref: "User" },
    
 });

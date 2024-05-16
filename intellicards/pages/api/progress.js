@@ -10,6 +10,21 @@ export default async function handle(req, res) {
     const { passedCards, passingPercentage, cardSetsId, userId } = req.body;
 
     try {
+      // Перевірка наявності запису про прогрес для цього користувача і кард-сету
+      const existingProgress = await Progress.findOne({
+        cardSetsId,
+        userId,
+      });
+
+      if (existingProgress) {
+        return res.status(200).json({
+          success: true,
+          message: "Progress for this card set already exists",
+          data: existingProgress,
+        });
+      }
+
+      // Якщо запис не існує, створіть новий
       const newProgress = await Progress.create({
         passedCards,
         passingPercentage,
@@ -18,6 +33,7 @@ export default async function handle(req, res) {
       });
       res.status(201).json({ success: true, data: newProgress });
     } catch (error) {
+      console.error("Error adding progress", error);
       res.status(500).json({ success: false, error: error.message });
     }
   }
@@ -42,11 +58,11 @@ export default async function handle(req, res) {
     res.status(405).json({ success: false, message: "Method not allowed" });
   }
   if (method === "PUT") {
-    const { progressId } = req.body;
+    const { progressId, passedCards, passingPercentage, cardSetsId, userId  } = req.body;
 
     try {
       const updatedProgress = await Progress.findOneAndUpdate(
-        { progressId },
+        {  _id: progressId },
         { passedCards, passingPercentage, cardSetsId, userId },
         { new: true }
       );
