@@ -7,7 +7,7 @@ const cardSetSchema = new Schema({
     userId: { type: Schema.Types.ObjectId, ref: "User" },
     rating: Number,
     countCards: Number,
-    IsPublic: { type: Boolean, default: true },
+    IsPublic: { type: Boolean, default: false },
 });
 
 

@@ -6,101 +6,147 @@ import styled from "styled-components";
 import Center from "@/components/Center";
 import Header from "@/components/Header";
 import Navigation from "@/components/Navigation";
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function EditSetPage({ _id, cardSet }) {
+  const [name, setName] = useState("");
+  const [category, setCategory] = useState("");
+  const [cards, setCards] = useState([{ question: "", answer: "" }]);
+  const [isPublic, setIsPublic] = useState(false);
+  const router = useRouter();
 
-    const [name, setName] = useState("");
-    const [category, setCategory] = useState("");
-    const [cards, setCards] = useState([{ question: "", answer: "" }]);
-    const [isPublic, setIsPublic] = useState(false);
-  
-    useEffect(() => {
-      if (cardSet) {
-        setName(cardSet.name);
-        setCategory(cardSet.category);
-        setCards(cardSet.cards);
-        setIsPublic(cardSet.IsPublic);
-      }
-    }, [cardSet]);
-  
-    const handleEditSet = async () => {
+  useEffect(() => {
+    if (cardSet) {
+      setName(cardSet.name);
+      setCategory(cardSet.category);
+      setCards(cardSet.cards);
+      setIsPublic(cardSet.IsPublic);
+    }
+  }, [cardSet]);
+
+  console.log(cards);
+
+  const handleEditSet = async () => {
+    const newCardsIds = [];
+    try {
+      // Оновлення існуючих карток
       try {
-        await axios.put(`/api/newCard`, {
-            cardId: _id,
-          name,
-          category,
-          cards,
-          countCards: cards.length,
-          IsPublic: isPublic,
-        });
-        // Додайте код для перенаправлення або виведення повідомлення про успіх
+        for (const card of cards) {
+          if (card._id) {
+       
+            const updatedCard = await axios.put("/api/newCard", {
+              _id: card._id,
+              question: card.question,
+              answer: card.answer,
+              image: "",
+            });
+            console.log(updatedCard);
+            newCardsIds.push(card._id); 
+          } else {
+      
+            const newCard = await axios.post("/api/newCard", {
+              question: card.question,
+              answer: card.answer,
+              image: "",
+            });
+            console.log(newCard);
+            newCardsIds.push(newCard.data.data._id); 
+          }
+        }
       } catch (error) {
-        console.error("Error editing set:", error);
-        // Обробте помилку, наприклад, показавши користувачеві повідомлення про помилку
+        console.error("Error during editing  cards", error);
       }
-    };
+      await axios.put(`/api/cardSet`, {
+        _id,
+        name,
+        category,
+        cards: newCardsIds,
+        countCards: cards.length,
+        IsPublic: isPublic,
+      });
+    } catch (error) {
+      console.error("Error editing set:", error);
+    }
+  };
+
+  const handleQuestionChange = (index, value) => {
+    const newCards = [...cards];
+    newCards[index].question = value;
+    setCards(newCards);
+  };
+
+  const handleAnswerChange = (index, value) => {
+    const newCards = [...cards];
+    newCards[index].answer = value;
+    setCards(newCards);
+  };
+
+  const handleAddCard = () => {
+    setCards([...cards, { question: "", answer: "" }]);
+  };
+  const handleDeleteCard = (index) => {
+    const newCards = [...cards];
+    newCards.splice(index, 1);
+    setCards(newCards);
+  };
   
-    const handleQuestionChange = (index, value) => {
-      const newCards = [...cards];
-      newCards[index].question = value;
-      setCards(newCards);
-    };
-  
-    const handleAnswerChange = (index, value) => {
-      const newCards = [...cards];
-      newCards[index].answer = value;
-      setCards(newCards);
-    };
-  
-    return (
-      <Center>
-        <Header />
-        <Navigation page="Редагувати набір" />
-  
-        <StyledDiv>
-          <StyledInput
-            placeholder="Введіть назву..."
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+
+  return (
+    <Center>
+      <Header />
+      <Navigation page="Редагувати набір" />
+
+      <StyledDiv>
+        <StyledInput
+          placeholder="Введіть назву..."
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+        <StyledInput
+          placeholder="Введіть категорію..."
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+        />
+      </StyledDiv>
+
+      <StyledText>Редагувати питання та відповіді</StyledText>
+
+      {cards.map((card, index) => (
+        <StyledQuestionDiv key={index}>
+          <DeleteIcon onClick={() => handleDeleteCard(index)}>
+            <FontAwesomeIcon icon={faTimes} />
+          </DeleteIcon>
+          <StyledCardInput
+            placeholder="Питання"
+            value={card.question}
+            onChange={(e) => handleQuestionChange(index, e.target.value)}
           />
-          <StyledInput
-            placeholder="Введіть категорію..."
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
+          <StyledCardInput
+            placeholder="Відповідь"
+            value={card.answer}
+            onChange={(e) => handleAnswerChange(index, e.target.value)}
           />
-        </StyledDiv>
-  
-        <StyledText>Редагувати питання та відповіді</StyledText>
-  
-        {cards.map((card, index) => (
-          <StyledQuestionDiv key={index}>
-            <StyledCardInput
-              placeholder="Питання"
-              value={card.question}
-              onChange={(e) => handleQuestionChange(index, e.target.value)}
-            />
-            <StyledCardInput
-              placeholder="Відповідь"
-              value={card.answer}
-              onChange={(e) => handleAnswerChange(index, e.target.value)}
-            />
-          </StyledQuestionDiv>
-        ))}
-  
-        <CheckBoxDiv>
-          <CheckBox
-            type="checkbox"
-            id="isPublic"
-            checked={isPublic}
-            onChange={(e) => setIsPublic(e.target.checked)}
-          />
-          <label htmlFor="isPublic">Зробити публічним</label>
-        </CheckBoxDiv>
-  
-        <AddSet onClick={handleEditSet}>Зберегти зміни</AddSet>
-      </Center>
-    );
-  }
+        </StyledQuestionDiv>
+      ))}
+      <StyledAddCard>
+        <AddCard onClick={handleAddCard}>Додати ще одну картку</AddCard>
+      </StyledAddCard>
+      <CheckBoxDiv>
+        <CheckBox
+          type="checkbox"
+          id="isPublic"
+          checked={isPublic}
+          onChange={(e) => setIsPublic(e.target.checked)}
+        />
+
+        <label htmlFor="isPublic">Зробити публічним</label>
+      </CheckBoxDiv>
+ 
+      <AddSet onClick={handleEditSet}>Зберегти зміни</AddSet>
+    </Center>
+  );
+}
 
 export async function getServerSideProps(context) {
   const { _id } = context.query;
@@ -113,6 +159,18 @@ export async function getServerSideProps(context) {
     },
   };
 }
+const StyledAddCard = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+`;
+const DeleteIcon = styled.div`
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  cursor: pointer;
+  z-index: 555;
+`;
 
 const AddSet = styled.button`
   width: 300px;
@@ -132,7 +190,26 @@ const AddSet = styled.button`
     background-color: #75c113;
   }
 `;
+const AddCard = styled.button`
+  width: 300px;
+  height: 50px;
+  text-align: center;
+  font-weight: bold;
+  background-color: #f3f3f3;
+  border: none;
+  margin-top: 20px;
+  font-size: 16px;
+  border-radius: 15px;
+  cursor: pointer;
+  border: 2px solid #75c113;
+  color: #75c113;
 
+  transition: background-color 1 ease;
+  &:hover {
+    background-color: #75c113;
+    color: white;
+  }
+`;
 const StyledInput = styled.input`
   width: 800px;
   height: 50px;

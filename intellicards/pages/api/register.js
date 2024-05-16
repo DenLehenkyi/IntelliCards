@@ -1,5 +1,6 @@
 import { mongooseConnect } from "@/lib/mongoose";
 import { User } from "@/models/User";
+import bcrypt from 'bcryptjs'; 
 
 export default async function handle(req, res) {
   const method = req.method;
@@ -7,17 +8,27 @@ export default async function handle(req, res) {
   await mongooseConnect();
 
   if (method === "POST") {
-    const { name, surname, email, password,points } = req.body;
+    const { name, surname, email, password, points } = req.body;
 
-    const newUser = await User.create({
-      name,
-      surname,
-      email,
-      password,
-      points,
-    
-    });
-    res.status(201).json({ success: true, data: newUser });
+    try {
+      // Генеруємо сіль для додаткового забезпечення паролю
+      const salt = await bcrypt.genSalt(10);
+      // Хешуємо пароль з використанням солі
+      const hashedPassword = await bcrypt.hash(password, salt);
+
+      const newUser = await User.create({
+        name,
+        surname,
+        email,
+        password: hashedPassword, // Зберігаємо захешований пароль у базі даних
+        points,
+      });
+
+      res.status(201).json({ success: true, data: newUser });
+    } catch (error) {
+      console.error("Error during user creation:", error);
+      res.status(500).json({ success: false, message: "Помилка під час створення користувача" });
+    }
   } else if (method === "GET") {
     const { email } = req.body;
 

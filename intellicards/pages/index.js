@@ -43,7 +43,7 @@ export default function Home({ cardSets, users }) {
 export async function getServerSideProps(context) {
   await mongooseConnect();
   
-  const cardSets = await CardSet.find({});
+  const cardSets = await CardSet.find({ IsPublic: true });
   const users = await User.find({});
 
   return {

@@ -9,6 +9,8 @@ import Link from "next/link";
 import { Card } from "@/models/Card";
 import { CardSet } from "@/models/CardSet";
 import { User } from "@/models/User";
+import axios from "axios";
+import { useRouter } from "next/router";
 import { useAuth } from "@/Contexts/AccountContext";
 import axios from "axios";
 
@@ -16,6 +18,7 @@ export default function SetPage({ _id, cardSet, users }) {
   const {user} = useAuth();
   const [cards, setCards] = useState([]);
   const set = cardSet;
+  const router = useRouter();
   useEffect(() => {
     if (set) {
       setCards(set.cards);
@@ -50,6 +53,9 @@ export default function SetPage({ _id, cardSet, users }) {
           <StyledLink href={"/edit/" + _id}>
             <Button>Редагувати набір</Button>
           </StyledLink>
+    
+            <Button onClick={handleDeleteSet}>Видалити набір</Button>
+       
         </ButtonAndBox>
         <CardsInSetGrid cards={cards} users={users} />
       </Container>
@@ -89,6 +95,10 @@ const Button = styled.button`
   font-weight: 700;
   cursor: pointer;
   margin-top: 50px;
+  &:hover {
+    background-color: #75c113;
+    color: white;
+  }
 `;
 
 const ButtonAndBox = styled.div`
