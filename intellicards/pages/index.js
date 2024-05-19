@@ -13,15 +13,18 @@ import { User } from "@/models/User";
 
 export default function Home({ cardSets, users }) {
   const [selectedCategory, setSelectedCategory] = useState(""); 
+  const [searchQuery, setSearchQuery] = useState("");
   console.log(cardSets);
   const handleCategoryClick = (category) => {
     setSelectedCategory(category);
   };
 
+  
+
   return (
     <Center>
       <Header />
-      <Search />
+      <Search setSearchQuery={setSearchQuery}/>
       <CategoriesAndGridDiv>
         <CategoriesAndButton>
           <CategoriesBox
@@ -33,7 +36,7 @@ export default function Home({ cardSets, users }) {
           </StyledLink>
         </CategoriesAndButton>
         <CardSets>
-           <CardSetsGrid allCardSets={cardSets} category={selectedCategory} users={users}/>
+           <CardSetsGrid allCardSets={cardSets} category={selectedCategory} users={users} title={"Набори карточок"} searchQuery={searchQuery}/>
         </CardSets>
       </CategoriesAndGridDiv>
     </Center>

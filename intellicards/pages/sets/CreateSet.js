@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Center from "@/components/Center";
 import Header from "@/components/Header";
-import Navigation from "@/components/Navigation";
+import Nav from "@/components/Navigation";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
@@ -33,7 +33,6 @@ export default function CreateSet() {
           image: "",
         });
         newCardsId.push(newCard.data.data._id);
-        console.log(newCard);
       }
     } catch (error) {
       console.error("Error during adding cards", error);
@@ -43,7 +42,6 @@ export default function CreateSet() {
   const handleCreateSet = async () => {
     await addCards();
 
-    console.log(newCardsId.length);
     try {
       const ispublic = document.getElementById("checkboxId").checked;
       const newCardSet = await axios.post("/api/cardSet", {
@@ -54,8 +52,8 @@ export default function CreateSet() {
         userId,
         rating: 0,
         IsPublic: ispublic, 
+        ratings: []
       });
-      console.log(newCardSet);
       setName("");
       setCategory("");
       setCards([{ question: "", answer: "" }]);
@@ -89,7 +87,7 @@ export default function CreateSet() {
   return (
     <Center>
       <Header />
-      <Navigation page="Створити набір" />
+      <Nav page="Створити набір" />
 
       <StyledDiv>
         <StyledInput

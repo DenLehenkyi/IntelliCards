@@ -6,7 +6,7 @@ import MyInput from "@/components/Login/MyInput";
 import { useRouter } from "next/router";
 import axios from "axios";
 import { useAuth } from "@/Contexts/AccountContext";
-import Navigation from "@/components/Navigation";
+import Nav from "@/components/Navigation";
 import Center from "@/components/Center";
 
 const RegisterPage = ({ toggleDarkMode, categories, subcategories }) => {
@@ -81,7 +81,7 @@ const RegisterPage = ({ toggleDarkMode, categories, subcategories }) => {
   return (
     <Center>
       <Header />
-      <Navigation page={"Зареєструватись"} />
+      <Nav page={"Зареєструватись"} />
       <Page>
         <Container>
           <FirstHalf>

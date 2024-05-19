@@ -1,4 +1,5 @@
 import { AuthProvider } from "@/Contexts/AccountContext";
+import { UnfinishedCardsProvider } from "@/components/UnfinishedCardsContext";
 import { createGlobalStyle } from "styled-components";
 
 const GlobalStyles = createGlobalStyle`
@@ -80,10 +81,10 @@ export default function App({ Component, pageProps }) {
   return (
     <>
       <AuthProvider>
-        
-    
-      <GlobalStyles />
-      <Component {...pageProps} />
+        <UnfinishedCardsProvider>
+          <GlobalStyles />
+          <Component {...pageProps} />
+        </UnfinishedCardsProvider>
       </AuthProvider>
     </>
   );

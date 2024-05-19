@@ -2,14 +2,14 @@ import styled from "styled-components";
 import SearchSvg from "./svg/SearchSvg";
 import FilterSvg from "./svg/FilterSvg";
 
-export default function Search() {
+export default function Search({setSearchQuery}) {
   return (
     <Div>
-      <SearchBar placeholder="Пошук.." />
-      <FilterButton>
+      <SearchBar placeholder="Пошук.." onChange={(e) => setSearchQuery(e.target.value)}/>
+      {/* <FilterButton>
         <FilterSvg />
         <ButtonText>Фільтри</ButtonText>
-      </FilterButton>
+      </FilterButton> */}
     </Div>
   );
 }
@@ -22,7 +22,7 @@ const Div = styled.div`
 `;
 
 const SearchBar = styled.input`
-  width: 786px;
+  width: 100%;
   height: 37px;
   background: rgba(209, 220, 202, 0.24);
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);

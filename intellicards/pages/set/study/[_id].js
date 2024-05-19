@@ -1,20 +1,15 @@
 import Center from "@/components/Center";
 import Header from "@/components/Header";
 import styled from "styled-components";
-import { useState, useEffect } from "react";
-import { cardSetsData, cardsData } from "@/components/data";
-// import Navigation from "@/components/Navigation";
-import { CardSet } from "@/models/CardSet";
+import { useState, useEffect, useContext } from "react";
 import axios from "axios";
-
-
 import { Swiper, SwiperSlide } from "swiper/react";
-
+import { CardSet } from "@/models/CardSet";
+import { Progress } from "@/models/Progress";
 import "swiper/css";
 import "swiper/css/effect-coverflow";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-
 import {
   EffectCoverflow,
   Pagination,
@@ -23,35 +18,47 @@ import {
 } from "swiper/modules";
 import ReactCardFlip from "react-card-flip";
 import { useAuth } from "@/Contexts/AccountContext";
-import { Progress } from "@/models/Progress";
+import AddFeedback from "@/components/Feedback";
+import { UnfinishedCardsContext } from "@/components/UnfinishedCardsContext";
+import Nav from "@/components/Navigation";
 
 export default function StudyPage({ _id, cardSet, progresses }) {
-  const [answer, setAnswer] = useState([]);
+  const [answer, setAnswer] = useState("");
   const set = cardSet;
-  const [cards, setCards] = useState([]);
+  const [allCards, setAllCards] = useState([]);
+  const [filteredCards, setFilteredCards] = useState([]);
   const [currentCardIndex, setCurrentCardIndex] = useState(-1);
   const [result, setResult] = useState("");
   const [color, setColor] = useState("");
-  const {user} = useAuth();
-  const [progress, setProgress] = useState();
+  const { user } = useAuth();
+  const [progress, setProgress] = useState(null);
+  const [showFeedback, setShowFeedback] = useState(false);
+  const [flips, setFlips] = useState({});
+  const { unfinishedCards, setUnfinishedCards } = useContext(
+    UnfinishedCardsContext
+  );
+
+  useEffect(() => {
+    if (user && user.data) {
+      const currentProgress = progresses.find(
+        (prog) => prog.userId == user.data._id
+      );
+      setProgress(currentProgress);
+    }
+  }, [progresses, user]);
 
   useEffect(() => {
     if (set) {
-      setCards(cardSet.cards);
+      setAllCards(cardSet.cards);
     }
   }, [set._id]);
 
   useEffect(() => {
-    const currentProgress = progresses.find((prog) => prog.userId == user.data._id);
-    setProgress(currentProgress);
-
-  }, [progresses]);
-
-  const [flips, setFlips] = useState({}); 
+    setFilteredCards(unfinishedCards);
+  }, [unfinishedCards]);
 
   const handleFlip = (index) => {
     setResult("");
-    console.log(index);
     setFlips((prevFlips) => ({
       ...prevFlips,
       [index]: !prevFlips[index],
@@ -59,25 +66,52 @@ export default function StudyPage({ _id, cardSet, progresses }) {
   };
 
   const handleAddProgress = async () => {
-    try {
-      const response = await axios.put("/api/progress", {
-        progressId: progress._id, 
-        passedCards: progress.passedCards + 1, 
-        passingPercentage: cardSet.countCards / (progress.passedCards + 1) * 100, 
-        cardSetsId: CardSet._id, 
-        userId: user.data._id
-      });
-      console.log("Progress updated successfully", response.data);
-    } catch (error) {
-      console.error("Error updating progress", error);
+    if (progress) {
+      let newCorrectCards = [
+        ...progress.correctCards,
+        filteredCards[currentCardIndex]._id,
+      ];
+      let newPassedCards = newCorrectCards.length;
+      let newPassingPercentage = (newPassedCards / set.countCards) * 100;
+
+      try {
+        const response = await axios.put("/api/progress", {
+          _id: progress._id,
+          passedCards: newPassedCards,
+          passingPercentage: newPassingPercentage,
+          correctCards: newCorrectCards,
+          cardSetsId: set._id,
+          userId: user.data._id,
+        });
+        setProgress(response.data.data);
+        console.log("Progress updated successfully", response.data);
+        await axios.put("/api/login", {
+          _id: user.data._id,
+          points: user.data.points + 5,
+        });
+  
+        user.data.points += 5;
+  
+        if (response.data.data.passingPercentage === 100) {
+          setShowFeedback(true);
+        }
+      } catch (error) {
+        console.error("Error updating progress", error);
+      }
     }
   };
-  
 
   const handleOnButtonFlip = (index) => {
+    if (!flips[index]) {
+      setFlips((prevFlips) => ({
+        ...prevFlips,
+        [index]: !prevFlips[index],
+      }));
+    }
+
     if (
       answer.trim().toLowerCase() ===
-      cards[currentCardIndex].answer.trim().toLowerCase()
+      filteredCards[currentCardIndex].answer.trim().toLowerCase()
     ) {
       setResult("Правильно! +5 балів");
       setColor("green");
@@ -86,21 +120,22 @@ export default function StudyPage({ _id, cardSet, progresses }) {
       setResult("Не правильно!");
       setColor("red");
     }
-
-    setFlips((prevFlips) => ({
-      ...prevFlips,
-      [index]: !prevFlips[index],
-    }));
   };
 
   const handleAnswerChange = (value) => {
-    const newAnswer = value;
-    setAnswer(newAnswer);
+    setAnswer(value);
+    if (flips[currentCardIndex]) {
+      setFlips((prevFlips) => ({
+        ...prevFlips,
+        [currentCardIndex]: !prevFlips[currentCardIndex],
+      }));
+    }
   };
+
   return (
     <Center>
       <Header />
-      {/* <Navigation page={set[0].name} /> */}
+      <Nav page={"Вивчення набору " + set.name} />
       <Wrapper>
         <Swiper
           effect={"coverflow"}
@@ -123,40 +158,37 @@ export default function StudyPage({ _id, cardSet, progresses }) {
           }}
           modules={[EffectCoverflow, Pagination, Navigation, EffectCards]}
           className="swiper_container"
-          onSlideChange={(swiper) => setCurrentCardIndex(swiper.realIndex)}
+          onSlideChange={(swiper) => {
+            setCurrentCardIndex(swiper.realIndex);
+            setAnswer(""); // Clear the input field when the card is changed
+          }}
         >
-          {cards.map((card, index) => {
-            return (
-              <SwiperSlide key={card._id}>
-                <ReactCardFlip
-                  isFlipped={flips[index]}
-                  flipDirection="vertical"
-                >
-                  <FrontCard onClick={() => handleFlip(index)}>
-                    <Card>
-                      <CardCount>Карточка {index + 1}</CardCount>
-                      <QuestionDiv>
-                        <Question>{card.question}</Question>
-                      </QuestionDiv>
-                    </Card>
-                  </FrontCard>
-                  <BackCard onClick={() => handleFlip(index)}>
-                    <Card>
-                      <CardCount>Карточка {index + 1}</CardCount>
-                      {result != "" && <Result color={color}>{result}</Result>}
-                      <QuestionDiv>
-                        <Question>Відповідь: {card.answer}</Question>
-                      </QuestionDiv>
-                    </Card>
-                  </BackCard>
-                </ReactCardFlip>
-              </SwiperSlide>
-            );
-          })}
-
+          {filteredCards.map((card, index) => (
+            <SwiperSlide key={card._id}>
+              <ReactCardFlip isFlipped={flips[index]} flipDirection="vertical">
+                <FrontCard onClick={() => handleFlip(index)}>
+                  <Card>
+                    <CardCount>Карточка {index + 1}</CardCount>
+                    <QuestionDiv>
+                      <Question>{card.question}</Question>
+                    </QuestionDiv>
+                  </Card>
+                </FrontCard>
+                <BackCard onClick={() => handleFlip(index)}>
+                  <Card>
+                    <CardCount>Карточка {index + 1}</CardCount>
+                    {result !== "" && <Result color={color}>{result}</Result>}
+                    <QuestionDiv>
+                      <Question>Відповідь: {card.answer}</Question>
+                    </QuestionDiv>
+                  </Card>
+                </BackCard>
+              </ReactCardFlip>
+            </SwiperSlide>
+          ))}
           <div className="slider-controler">
             <div className="swiper-button-prev slider-arrow">
-              <ion-icon  name="arrow-back-outline"></ion-icon>
+              <ion-icon name="arrow-back-outline"></ion-icon>
             </div>
             <div className="swiper-button-next slider-arrow">
               <ion-icon name="arrow-forward-outline"></ion-icon>
@@ -166,23 +198,27 @@ export default function StudyPage({ _id, cardSet, progresses }) {
         <InputAndButton>
           <Input
             placeholder="Введіть відповідь..."
+            value={answer}
             onChange={(e) => handleAnswerChange(e.target.value)}
           ></Input>
-          <ShowAnswerButton onClick={() => handleOnButtonFlip(currentCardIndex)}>
+          <ShowAnswerButton
+            onClick={() => handleOnButtonFlip(currentCardIndex)}
+          >
             Перевернути карточку
           </ShowAnswerButton>
         </InputAndButton>
       </Wrapper>
+      {showFeedback && (
+        <AddFeedback set={set} onClose={() => setShowFeedback(false)} />
+      )}
     </Center>
   );
 }
 
 export async function getServerSideProps(context) {
-  const { req, query } = context;
-  const user = req.user;
   const { _id } = context.query;
   const cardSet = await CardSet.findById(_id).populate("cards");
-  const progresses = await Progress.find({cardSetsId: _id });
+  const progresses = await Progress.find({ cardSetsId: _id });
 
   return {
     props: {
@@ -197,8 +233,7 @@ const Wrapper = styled.div`
   width: 1000px;
   height: 619px;
   background: #f3f3f3;
-  margin-top: 10px;
-  margin: 0 auto;
+  margin-top: 20px;
 `;
 
 const FrontCard = styled.div``;
@@ -230,15 +265,10 @@ const Question = styled.p`
   font-size: 24px;
   font-weight: 500;
 `;
+
 const QuestionDiv = styled.div`
   position: absolute;
   top: 39%;
-`;
-const MainCard = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
 `;
 
 const InputAndButton = styled.div`
@@ -279,7 +309,7 @@ const ShowAnswerButton = styled.button`
 const Result = styled.p`
   margin-top: 350px;
   font-weight: 800;
-  color: ${props => props.color};
+  color: ${(props) => props.color};
   align-self: flex-start;
   font-size: 20px;
 `;

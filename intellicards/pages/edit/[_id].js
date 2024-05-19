@@ -5,7 +5,7 @@ import axios from "axios";
 import styled from "styled-components";
 import Center from "@/components/Center";
 import Header from "@/components/Header";
-import Navigation from "@/components/Navigation";
+import Nav from "@/components/Navigation";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -14,6 +14,7 @@ export default function EditSetPage({ _id, cardSet }) {
   const [category, setCategory] = useState("");
   const [cards, setCards] = useState([{ question: "", answer: "" }]);
   const [isPublic, setIsPublic] = useState(false);
+  const [ratings, setRatings] = useState([]);
   const router = useRouter();
 
   useEffect(() => {
@@ -22,6 +23,7 @@ export default function EditSetPage({ _id, cardSet }) {
       setCategory(cardSet.category);
       setCards(cardSet.cards);
       setIsPublic(cardSet.IsPublic);
+      setRatings(cardSet.ratings || []);
     }
   }, [cardSet]);
 
@@ -64,6 +66,7 @@ export default function EditSetPage({ _id, cardSet }) {
         cards: newCardsIds,
         countCards: cards.length,
         IsPublic: isPublic,
+        ratings
       });
     } catch (error) {
       console.error("Error editing set:", error);
@@ -95,7 +98,7 @@ export default function EditSetPage({ _id, cardSet }) {
   return (
     <Center>
       <Header />
-      <Navigation page="Редагувати набір" />
+      <Nav page="Редагувати набір" />
 
       <StyledDiv>
         <StyledInput

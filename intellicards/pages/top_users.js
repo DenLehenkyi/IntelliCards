@@ -1,21 +1,26 @@
 import Center from "@/components/Center";
 import Header from "@/components/Header";
-import Navigation from "@/components/Navigation";
+import Nav from "@/components/Navigation";
 import styled from "styled-components";
 import { User } from "@/models/User";
 import { mongooseConnect } from "@/lib/mongoose";
+import { useAuth } from "@/Contexts/AccountContext";
 
 export default function TopUsersPage({ users }) {
-  console.log(users);
+  const { user: currentUser } = useAuth();
+
   return (
     <Center>
       <Header />
-      <Navigation page={"Топ користувачів"} />
+      <Nav page={"Топ користувачів"} />
       <UsersDiv>
         {users &&
           users.map((user, index) => (
-            <UserDiv key={user._id}>
-              <StyledOrder>{index + 1}.</StyledOrder> {/* Add numbering */}
+            <UserDiv
+              key={user._id}
+              isCurrentUser={currentUser && currentUser.data._id === user._id}
+            >
+              <StyledOrder>{index + 1}.</StyledOrder>
               <StyledName>{user.name}</StyledName>
               <StyledSurname>{user.surname}</StyledSurname>
               <StyledPoints>{user.points}</StyledPoints>
@@ -27,15 +32,15 @@ export default function TopUsersPage({ users }) {
                 xmlns="http://www.w3.org/2000/svg"
               >
                 <path
-                  d="M7.9108 1.12969L9.47553 5.92656C9.53438 6.10709 9.62821 6.26307 9.74722 6.37823C9.86623 6.49339 10.0061 6.5635 10.1521 6.58125L13.9639 7.04063C14.3952 7.125 14.5673 7.83594 14.2546 8.24531L11.3832 11.4875C11.1507 11.75 11.0449 12.1625 11.1088 12.5609L11.9435 17.8125C12.0168 18.3891 11.5669 18.8297 11.1809 18.5563L7.85384 15.9375C7.72836 15.8385 7.58549 15.7863 7.43999 15.7863C7.29449 15.7863 7.15163 15.8385 7.02614 15.9375L3.69907 18.5547C3.31428 18.8266 2.86323 18.3875 2.93647 17.8109L3.77114 12.5594C3.83392 12.1609 3.72929 11.7484 3.49679 11.4859L0.624254 8.24688C0.312704 7.83906 0.484754 7.12656 0.914879 7.04219L4.72672 6.58281C4.87276 6.56507 5.01259 6.49496 5.1316 6.3798C5.25061 6.26464 5.34444 6.10865 5.40329 5.92813L6.96802 1.13125C7.16215 0.60625 7.71783 0.60625 7.9108 1.12969Z"
+                  d="M10.6328 1.07585L12.7359 5.6443C12.815 5.81623 12.9412 5.96479 13.1011 6.07446C13.2611 6.18414 13.449 6.25091 13.6453 6.26781L18.7687 6.70531C19.3484 6.78567 19.5797 7.46275 19.1594 7.85263L15.3 10.9404C14.9875 11.1904 14.8453 11.5833 14.9312 11.9628L16.0531 16.9642C16.1516 17.5133 15.5469 17.933 15.0281 17.6726L10.5562 15.1785C10.3876 15.0842 10.1956 15.0345 9.99999 15.0345C9.80443 15.0345 9.6124 15.0842 9.44374 15.1785L4.97187 17.6711C4.45468 17.93 3.84843 17.5119 3.94687 16.9628L5.06874 11.9613C5.15312 11.5818 5.01249 11.1889 4.69999 10.9389L0.839054 7.85412C0.420304 7.46573 0.651554 6.78716 1.22968 6.7068L6.35312 6.2693C6.54942 6.2524 6.73735 6.18562 6.89731 6.07595C7.05727 5.96627 7.18338 5.81772 7.26249 5.64579L9.36562 1.07733C9.62655 0.577335 10.3734 0.577335 10.6328 1.07585Z"
                   fill="#FDD835"
                 />
                 <path
-                  d="M7.79703 6.21401L7.53185 2.67964C7.52139 2.48276 7.49115 2.14526 7.72608 2.14526C7.91217 2.14526 8.01335 2.66558 8.01335 2.66558L8.80887 5.50308C9.10893 6.58276 8.98565 6.95308 8.69606 7.17183C8.36343 7.42183 7.87262 7.22651 7.79703 6.21401Z"
+                  d="M10.4797 5.91821L10.1234 2.55214C10.1094 2.36464 10.0687 2.04321 10.3844 2.04321C10.6344 2.04321 10.7703 2.53875 10.7703 2.53875L11.8391 5.24113C12.2422 6.2694 12.0766 6.62208 11.6875 6.83042C11.2406 7.06851 10.5812 6.8825 10.4797 5.91821Z"
                   fill="#FFFF8D"
                 />
                 <path
-                  d="M11.0763 11.1735L13.3571 8.7813C13.4699 8.65474 13.6733 8.45317 13.5106 8.22349C13.3815 8.04224 13.0328 8.30317 13.0328 8.30317L11.0368 9.35161C10.4416 9.62817 10.0463 10.0375 10.0114 10.5532C9.96611 11.2407 10.4253 11.7704 11.0763 11.1735Z"
+                  d="M14.8875 10.6414L17.9531 8.36313C18.1047 8.2426 18.3781 8.05063 18.1594 7.83188C17.986 7.65927 17.5172 7.90778 17.5172 7.90778L14.8344 8.90629C14.0344 9.16968 13.5031 9.55956 13.4563 10.0506C13.3953 10.7054 14.0125 11.2099 14.8875 10.6414Z"
                   fill="#F4B400"
                 />
               </StyledStar>
@@ -50,15 +55,15 @@ export async function getServerSideProps(context) {
   await mongooseConnect();
 
   const users = await User.find({});
+  users.sort((a, b) => b.points - a.points);
 
   return {
     props: {
       users: JSON.parse(JSON.stringify(users)),
-
-      search: context.query?.search || "",
     },
   };
 }
+
 const StyledStar = styled.svg`
   margin-right: 15px;
 `;
@@ -93,4 +98,8 @@ const UserDiv = styled.div`
   align-items: center;
   margin: 0 auto;
   margin-top: 30px;
+  border: ${(props) =>
+    props.isCurrentUser
+      ? "2px solid #C5E898"
+      : "none"}; 
 `;

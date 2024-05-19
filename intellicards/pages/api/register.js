@@ -1,6 +1,6 @@
 import { mongooseConnect } from "@/lib/mongoose";
 import { User } from "@/models/User";
-import bcrypt from 'bcryptjs'; 
+
 
 export default async function handle(req, res) {
   const method = req.method;
@@ -12,15 +12,13 @@ export default async function handle(req, res) {
 
     try {
       // Генеруємо сіль для додаткового забезпечення паролю
-      const salt = await bcrypt.genSalt(10);
-      // Хешуємо пароль з використанням солі
-      const hashedPassword = await bcrypt.hash(password, salt);
+      
 
       const newUser = await User.create({
         name,
         surname,
         email,
-        password: hashedPassword, // Зберігаємо захешований пароль у базі даних
+        password, 
         points,
       });
 

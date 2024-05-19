@@ -5,6 +5,7 @@ const progressSchema = new Schema({
     passingPercentage:Number,  
     cardSetsId: { type: Schema.Types.ObjectId, ref: "CardSet" },
     userId: { type: Schema.Types.ObjectId, ref: "User" },
+    correctCards: [{ type: Schema.Types.ObjectId, ref: "Card" }],
    
 });
 

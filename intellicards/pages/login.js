@@ -4,7 +4,7 @@ import styled from "styled-components";
 import LoginButton from "@/components/Login/LoginButton";
 import MyInput from "@/components/Login/MyInput";
 import { useRouter } from "next/router";
-import Navigation from "@/components/Navigation";
+import Nav from "@/components/Navigation";
 import Center from "@/components/Center";
 import axios from "axios";
 import { useAuth } from "@/Contexts/AccountContext";
@@ -74,7 +74,7 @@ const LoginPage = () => {
   return (
     <Center>
       <Header />
-      <Navigation page={"Увійти"} />
+      <Nav page={"Увійти"} />
       <Page>
         <Container>
           {!isLogin && (

@@ -5,7 +5,7 @@ import MyInput from "./Login/MyInput";
 import LoginButton from "./Login/LoginButton";
 import { useAuth } from "@/Contexts/AccountContext";
 import Center from "./Center";
-import Navigation from "./Navigation";
+import Nav from "./Navigation";
 
 const UserEditor = () => {
   const { user } = useAuth(); 

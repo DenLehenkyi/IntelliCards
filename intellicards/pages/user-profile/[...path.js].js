@@ -5,7 +5,7 @@ import UserEditor from "@/components/UserEditor";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { useAuth } from "@/Contexts/AccountContext";
-import Navigation, { UrlsDiv } from "@/components/Navigation";
+import Nav, { UrlsDiv } from "@/components/Navigation";
 import Center from "@/components/Center";
 
 const UserProfilePage = ({}) => {
@@ -51,7 +51,7 @@ const UserProfilePage = ({}) => {
   return (
     <>
       <Header />
-      <Navigation page="Дані облікового запису" />
+      <Nav page="Дані облікового запису" />
       
       {isMobile && (
         <>

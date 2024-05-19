@@ -20,7 +20,7 @@ export default async function handle(req, res) {
 }
 
 async function handlePost(req, res) {
-  const { name, category, cards, countCards, userId, rating, IsPublic } = req.body;
+  const { name, category, cards, countCards, userId, ratings, IsPublic } = req.body;
 
   try {
     const newCard = await CardSet.create({
@@ -29,7 +29,7 @@ async function handlePost(req, res) {
       cards,
       countCards,
       userId,
-      rating,
+      ratings,
       IsPublic,
     });
 
@@ -59,27 +59,32 @@ async function handleGet(req, res) {
 }
 
 async function handlePut(req, res) {
-  const { _id, name, category, cards, countCards, IsPublic } = req.body;
+  const { _id, name, category, cards, countCards, IsPublic, ratings } = req.body;
 
   try {
-    const updatedCardSet = await CardSet.findOneAndUpdate(
-      { _id },
-      { name, category, cards, countCards, IsPublic },
-      { new: true }
-    );
-
-    if (!updatedCardSet) {
-      return res
-        .status(404)
-        .json({ success: false, message: "CardSet not found" });
+    const cardSet = await CardSet.findById(_id);
+    if (!cardSet) {
+      return res.status(404).json({ success: false, message: "CardSet not found" });
     }
 
-    res.status(200).json({ success: true, data: updatedCardSet });
+    // Update fields
+    if (name) cardSet.name = name;
+    if (category) cardSet.category = category;
+    if (cards) cardSet.cards = cards;
+    if (countCards !== undefined) cardSet.countCards = countCards;
+    if (IsPublic !== undefined) cardSet.IsPublic = IsPublic;
+    if (ratings) cardSet.ratings = ratings;
+
+    // Save the document to trigger the pre-save hook
+    await cardSet.save();
+
+    res.status(200).json({ success: true, data: cardSet });
   } catch (error) {
     console.error("Error updating CardSet data:", error);
     res.status(500).json({ success: false, message: "Server error" });
   }
 }
+
 
 async function handleDelete(req, res) {
   const { cardSetId } = req.body;

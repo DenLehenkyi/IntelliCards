@@ -1,28 +1,29 @@
 import Center from "@/components/Center";
 import Header from "@/components/Header";
 import styled from "styled-components";
-import Navigation from "@/components/Navigation";
+import Nav from "@/components/Navigation";
 
 import { useAuth } from "@/Contexts/AccountContext";
 import { useEffect, useState } from "react";
 import { mongooseConnect } from "@/lib/mongoose";
-import { Card } from "@/models/Card";
 import { CardSet } from "@/models/CardSet";
 import CardSetsGrid from "@/components/Card/CardSetsGrid";
 import { User } from "@/models/User";
+import { Progress } from "@/models/Progress";
+import { Card } from "@/models/Card";
 
-export default function MySets({ cardSets, users }) {
+export default function MySets({ cardSets, users, progresses }) {
   const { user } = useAuth();
   const [userId, setUserId] = useState(null);
   const [myCardSets, setMyCardSets] = useState([]);
-  const [showMySets, setShowMySets] = useState(true); // Доданий стан для відображення моїх наборів
-  const [isMySetsClicked, setIsMySetsClicked] = useState(false); //
+  const [isMySetsClicked, setIsMySetsClicked] = useState(false);
+  const [progressSet, setProgressSet] = useState([]);
 
   useEffect(() => {
-    if (user) {
+    if (user && user.data) {
       setUserId(user.data._id);
     }
-  }, [user, userId]);
+  }, [user]);
 
   useEffect(() => {
     if (userId) {
@@ -33,24 +34,34 @@ export default function MySets({ cardSets, users }) {
     }
   }, [userId, cardSets]);
 
+  useEffect(() => {
+    if (user && user.data) {
+      const filteredProgress = progresses.filter(
+        (progress) => progress.userId === user.data._id
+      );
+      const sets = filteredProgress.map((progress) => progress.cardSetsId).filter(set => set);
+      setProgressSet(sets);
+    }
+  }, [user, progresses]);
+
   const handleShowMySets = () => {
-    setIsMySetsClicked(true); // Встановлюємо стан showMySets в true при натисканні кнопки
+    setIsMySetsClicked(true);
   };
 
   const handleShowLearningProgress = () => {
-    setIsMySetsClicked(false); // Встановлюємо стан showMySets в false при натисканні кнопки
+    setIsMySetsClicked(false);
   };
 
   return (
     <>
       <Header />
-      <Navigation page="Мої набори" />
+      <Nav page={"Мої набори"} />
       <Center>
         <Wrapper>
           <Menu>
             <Button onClick={handleShowMySets} isActive={isMySetsClicked}>
               Створені мною
-            </Button>{" "}
+            </Button>
             <Button
               onClick={handleShowLearningProgress}
               isActive={!isMySetsClicked}
@@ -59,12 +70,26 @@ export default function MySets({ cardSets, users }) {
             </Button>
           </Menu>
           <MySetsDiv>
-            {isMySetsClicked && (
-              <CardSetsGrid
-                allCardSets={myCardSets}
-                category={""}
-                users={users}
-              />
+            {isMySetsClicked && myCardSets && (
+              <GridDiv>
+                <CardSetsGrid
+                  allCardSets={myCardSets}
+                  category={""}
+                  users={users}
+                  title={"Мої набори"}
+                />
+              </GridDiv>
+            )}
+            {!isMySetsClicked && progressSet && (
+              <GridDiv>
+                <CardSetsGrid
+                  allCardSets={progressSet}
+                  category={""}
+                  users={users}
+                  title={"Прогрес вивчення"}
+                  progresses={progresses}
+                />
+              </GridDiv>
             )}
           </MySetsDiv>
         </Wrapper>
@@ -78,12 +103,13 @@ export async function getServerSideProps(context) {
 
   const cardSets = await CardSet.find({}).populate("cards");
   const users = await User.find({});
+  const progresses = await Progress.find({}).populate("cardSetsId");
 
   return {
     props: {
       cardSets: JSON.parse(JSON.stringify(cardSets)),
       users: JSON.parse(JSON.stringify(users)),
-
+      progresses: JSON.parse(JSON.stringify(progresses)),
       search: context.query?.search || "",
     },
   };
@@ -95,14 +121,13 @@ const Wrapper = styled.div`
 
 const Menu = styled.div`
   display: flex;
-
   flex-direction: column;
   gap: 20px;
   margin-top: 55px;
 `;
+
 const Button = styled.button`
-  background-color: ${({ isActive }) => (isActive ? "gray" : "#c5e898")};
-  color: ${({ isActive }) => (isActive ? "white" : "black")};
+  background-color: ${({ isActive }) => (isActive ? "#c5e898" : "#D9D9D9")};
   border: none;
   font-family: "Montserrat", sans-serif;
   border-radius: 20px;
@@ -117,17 +142,15 @@ const Button = styled.button`
     color: ${({ isActive }) => (isActive ? "white" : "black")};
   }
 `;
+
 const MySetsDiv = styled.div`
   width: 730px;
-
   border-radius: 15px;
   margin-left: 25px;
   margin-top: 30px;
-
   height: auto;
 `;
-const StyledH2 = styled.h2`
-  font-family: "Montserrat";
-  font-size: 16px;
-  padding-left: 22px;
+
+const GridDiv = styled.div`
+  width: 740px;
 `;

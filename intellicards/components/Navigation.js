@@ -2,7 +2,7 @@ import styled from "styled-components";
 import Center from "./Center";
 import Link from "next/link";
 
-export default function Navigation({ page }) {
+export default function Nav({ page }) {
   return (
     <Center>
       <UrlsDiv>
